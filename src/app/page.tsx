@@ -12,10 +12,12 @@ import Clock from "./components/Clock";
 export default observer(function Home() {
   const store = useLocalObservable(() => GameStore)
   return (
-    <div className="flex h-screen w-screen min-h-screen flex-col bg-gray-500">
+    <div className="flex h-screen min-h-screen flex-col bg-gray-500">
       <NavBar />
-      <Clock />
-      <InstructionBar />
+      <div className="flex flex-col-2 justify-center space-x-12">
+        <InstructionBar />
+        <Clock />
+      </div>
       <GameBoard />
       <TilesBar />
     </div>
