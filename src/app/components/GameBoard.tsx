@@ -12,7 +12,7 @@ const GameBoard = () => {
     //   </div>
     // </div>
     <div className="flex justify-center mt-5">
-      <div className="w-9/12 h-0 pb-9/12 aspect-square relative">
+      <div className="w-6/12 h-6/12 aspect-square relative">
         <div className="grid absolute inset-0 grid-cols-5 gap-1 p-1 rounded-md">
           {Array.from({ length: 25 }, (_, index) => (
             <div
