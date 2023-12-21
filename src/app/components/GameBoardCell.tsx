@@ -1,12 +1,13 @@
 interface GameBoardCellProps {
-  row: number,
-  col: number,
+  id: number,
+  key: number,
+  value: string,
 }
-//{row, col}: GameBoardCellProps
-const GameBoardCell = () => {
+
+const GameBoardCell = ({key, value}: GameBoardCellProps) => {
   return (
-    <div className="w-16 h-16 bg-white border-black-200 border-5">
-      
+    <div className="bg-gray-300 flex items-center justify-center text-2xl font-bold text-gray-700">
+      {value}
     </div>
   )
 }

@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from 'react';
+
 import { observer, useLocalObservable } from "mobx-react-lite";
 
 import GameBoard from "./components/GameBoard";
@@ -9,8 +11,25 @@ import TilesBar from "./components/TilesBar";
 import GameStore from "../../stores/GameStore";
 import Clock from "./components/Clock";
 
+function handleOnDrag(e: React.DragEvent, value: string) {
+  e.dataTransfer.setData('value', value)
+}
+
+function handleOnDrop(e: React.DragEvent) {
+  const value = e.dataTransfer.getData('value') as string;
+  console.log('tile value: ', value);
+  //setGameBoard([...gameBoard, value])
+}
+
+function handleDragOver(e: React.DragEvent) {
+  e.preventDefault();
+}
+
 export default observer(function Home() {
   const store = useLocalObservable(() => GameStore)
+
+  const [gameBoard, setGameBoard] = useState<string>('')
+
   return (
     <div className="flex h-screen min-h-screen flex-col bg-gray-500">
       <NavBar />
@@ -18,8 +37,8 @@ export default observer(function Home() {
         <InstructionBar />
         <Clock />
       </div>
-      <GameBoard />
-      <TilesBar />
+      <GameBoard onDrop={handleOnDrop} onDragOver={handleDragOver}/>
+      <TilesBar handleOnDrag={handleOnDrag}/>
     </div>
   )
 })
