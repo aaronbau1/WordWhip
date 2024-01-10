@@ -37,8 +37,8 @@ export default observer(function Home() {
         <ScoreBar />
         <Clock />
       </div>
-      <GameBoard onDrop={handleOnDrop} onDragOver={handleDragOver}/>
-      <TilesBar handleOnDrag={handleOnDrag}/>
+      <GameBoard />
+      <TilesBar />
     </div>
   )
 })

@@ -6,9 +6,17 @@ import GameBoardCell from "./GameBoardCell"
 const GameBoard = () => {
 
   const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
+  const [boardValues, setBoardValues] = useState<string[]>(Array(25).fill('A'));
 
   const handleDragLeave = () => {
     setHighlightedCell(null);
+  };
+
+  const handleTileDrop = (id: number, value: string) => {
+    // Update the boardValues array when a cell is dropped
+    const updatedValues = [...boardValues];
+    updatedValues[id] = value;
+    setBoardValues(updatedValues);
   };
 
   return (
@@ -17,11 +25,13 @@ const GameBoard = () => {
         <div className="grid absolute inset-0 grid-cols-5 gap-0.5 p-1 rounded-md"
           onDragLeave={handleDragLeave}
         >
-          {Array.from({ length: 25 }, (_, index) => (
+          {boardValues.map((value, index) => (
             <GameBoardCell 
               key={index} 
               id={index}
-              value={String.fromCharCode(65 + index)}
+              value={value}
+              onDrop={handleTileDrop}
+              //Maybe its best to have the gameboard state managed and then map out the results in a use effect
             />
           ))}
         </div>

@@ -3,34 +3,28 @@ import { useState } from "react";
 interface GameBoardCellProps {
   id: number,
   value: string,
+  onDrop: (id: number, value: string) => void;
 }
 
-const GameBoardCell = ({ id, value }: GameBoardCellProps) => {
+const GameBoardCell = ({ id, value, onDrop }: GameBoardCellProps) => {
   
   const [isHighlighted, setIsHighlighted] = useState<boolean>(false)
   
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-
-     // Get the center coordinates of the cell
-     const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
-     const cellCenterX = left + width / 2;
-     const cellCenterY = top + height / 2;
-
-     // Calculate the distance from the mouse pointer to the cell's center
-    const offsetX = event.clientX - cellCenterX;
-    const offsetY = event.clientY - cellCenterY;
-
-    // snapping distance threshold
-    const threshold = 50;
-
-    if (Math.abs(offsetX) <= threshold && Math.abs(offsetY) <= threshold) {
-      setIsHighlighted(true);
-    }
+    setIsHighlighted(true);
   };
 
   const handleDragLeave = () => {
     setIsHighlighted(false);
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsHighlighted(false);
+
+    const draggedValue = event.dataTransfer.getData("text/plain");
+    onDrop(id, draggedValue);
   };
 
   return (
@@ -39,6 +33,7 @@ const GameBoardCell = ({ id, value }: GameBoardCellProps) => {
       ${isHighlighted ? 'bg-red-700' : 'bg-gray-300'}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
     >
       {value}
     </div>
