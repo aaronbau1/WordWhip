@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { observer, useLocalObservable } from "mobx-react-lite";
 
 import GameBoard from "./components/GameBoard";
-import InstructionBar from "./components/InstructionBar";
 import NavBar from "./components/NavBar";
 import TilesBar from "./components/TilesBar";
 import GameStore from "../../stores/GameStore";
 import Clock from "./components/Clock";
+import ScoreBar from './components/ScoreBar';
 
 function handleOnDrag(e: React.DragEvent, value: string) {
   e.dataTransfer.setData('value', value)
@@ -34,7 +34,7 @@ export default observer(function Home() {
     <div className="flex h-screen min-h-screen flex-col bg-gray-500">
       <NavBar />
       <div className="flex flex-col-2 justify-center space-x-12">
-        <InstructionBar />
+        <ScoreBar />
         <Clock />
       </div>
       <GameBoard onDrop={handleOnDrop} onDragOver={handleDragOver}/>
