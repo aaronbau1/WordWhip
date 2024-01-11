@@ -3,17 +3,15 @@
 import { useState } from "react";
 
 const TilesBar = () => {
-  const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
 
-  const handleMouseDown = () => {
-    setIsGrabbing(true);
-    document.body.style.cursor = "grabbing";
-  };
+  const getRandomCapitalLetter = ():string => {
+    // ASCII codes for capital letters range from 65 to 90
+    const randomCharCode = Math.floor(Math.random() * (90 - 65 + 1)) + 65;
+    const randomCapitalLetter = String.fromCharCode(randomCharCode);
+    return randomCapitalLetter;
+  }
 
-  const handleMouseUp = () => {
-    setIsGrabbing(false);
-    document.body.style.cursor = "default"; // Reset cursor when released
-  };
+  const [tileValue, setTileValue] = useState<string>(getRandomCapitalLetter())
 
   const handleOnDrag = (event: React.DragEvent<HTMLDivElement>, value: string) => {
     event.dataTransfer.setData("text/plain", value);
@@ -22,16 +20,19 @@ const TilesBar = () => {
     }
   };
 
+  const handleOnDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    setTileValue(getRandomCapitalLetter());
+  };
+
   return (
     <div className="flex flex-col items-center justify-center pt-10">
       <div className='flex h-14 w-14 border-2 border-black/60 items-center justify-center bg-gray-300 text-2xl font-bold text-gray-700 cursor-pointer'
         draggable
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onDragStart={(e) => handleOnDrag(e, 'B')}
+        onDragStart={(e) => handleOnDrag(e, tileValue)}
+        onDragEnd={handleOnDrop}
         style={{ opacity: 1 }}
       >
-        B
+        {tileValue}
       </div>
     </div>
   )
