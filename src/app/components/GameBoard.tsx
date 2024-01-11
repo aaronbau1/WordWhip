@@ -1,7 +1,7 @@
 import { useState } from "react";
 import GameBoardCell from "./GameBoardCell"
-
-
+import trie from "../../../lib/utils/Trie";
+import { gameBoardLines } from "../../../lib/data";
 
 const GameBoard = () => {
 
@@ -12,11 +12,22 @@ const GameBoard = () => {
     setHighlightedCell(null);
   };
 
+  const linesToWords = (gameBoardLines: number[][]):string[] => {
+    return gameBoardLines.map((line) => {
+      return line.map((id) => (boardValues[id]).toLowerCase).join('');
+    })
+  }
+
   const handleTileDrop = (id: number, value: string) => {
-    // Update the boardValues array when a cell is dropped
     const updatedValues = [...boardValues];
     updatedValues[id] = value;
     setBoardValues(updatedValues);
+    // Check a diagonal, vertical, or row for matching words
+    let wordsArray = linesToWords(gameBoardLines)
+    const findMatch = wordsArray.filter((word) => {
+      return trie.search(word);
+    })
+    if (findMatch[0]) alert(`You found the word: ${findMatch[0]}`)
   };
 
   return (
@@ -31,7 +42,6 @@ const GameBoard = () => {
               id={index}
               value={value}
               onDrop={handleTileDrop}
-              //Maybe its best to have the gameboard state managed and then map out the results in a use effect
             />
           ))}
         </div>
