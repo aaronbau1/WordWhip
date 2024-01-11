@@ -7,7 +7,6 @@ import { observer, useLocalObservable } from "mobx-react-lite";
 import GameBoard from "./components/GameBoard";
 import NavBar from "./components/NavBar";
 import TilesBar from "./components/TilesBar";
-import GameStore from "../../stores/GameStore";
 import Clock from "./components/Clock";
 import ScoreBar from './components/ScoreBar';
 
@@ -26,9 +25,6 @@ function handleDragOver(e: React.DragEvent) {
 }
 
 export default observer(function Home() {
-  const store = useLocalObservable(() => GameStore)
-
-  const [gameBoard, setGameBoard] = useState<string>('')
 
   return (
     <div className="flex h-screen min-h-screen flex-col bg-gray-500">
