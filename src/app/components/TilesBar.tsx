@@ -3,17 +3,11 @@
 import { useEffect, useState } from "react";
 import { getRandomCapitalLetter } from "../../../lib/hooks";
 
-// interface TileBarProps {
-//   updateTileBar: (newTileValue: string) => void;
-// }
+interface TilesBarProps {
+  tileValues: string[];
+}
 
-const TilesBar = () => {
-
-  const [tileValues, setTileValues] = useState<string[]>([]);
-
-  useEffect(() => {
-    setTileValues([getRandomCapitalLetter(), getRandomCapitalLetter()]);
-  }, []);
+const TilesBar = ({ tileValues }: TilesBarProps) => {
 
   const handleOnDrag = (event: React.DragEvent<HTMLDivElement>, value: string | null, index: number) => {
     if (value) {
@@ -38,10 +32,11 @@ const TilesBar = () => {
   // };
 
   return (
-    <div className="flex items-center justify-center pt-8 pb-4">
+    <div className="flex items-center justify-center pt-6 pb-4">
       { 
         tileValues.map((value, index) => (
           <div
+          key={index}
             className='flex h-14 w-14 border-2 border-black/60 items-center 
             justify-center bg-gray-300 text-2xl font-bold text-gray-700 
             cursor-pointer m-1'
