@@ -34,7 +34,6 @@ export default observer(function Home() {
         <Clock />
       </div>
       <GameBoard />
-      <TilesBar />
     </div>
   )
 })
