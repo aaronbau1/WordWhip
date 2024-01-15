@@ -11,18 +11,35 @@ const GameBoard = () => {
   const [boardValues, setBoardValues] = useState<string[]>(Array(25).fill('A'));
   const [tileValues, setTileValues] = useState<string[]>([]);
 
+
+  //BUG FOUND: IF BOTH ARE SAME LETTER, WILL UPDATE WITH ONLY ONE TILE IF PLACED
   useEffect(() => {
     setTileValues([getRandomCapitalLetter(), getRandomCapitalLetter()]);
   }, []);
+
+  useEffect(() => {
+    // Check for matches after the boardValues state has been updated
+    const wordsArray = linesToWords(gameBoardLines);
+    console.log(wordsArray);
+    const findMatch = wordsArray.filter((word) => trie.search(word));
+    // alert(findMatch[0])
+    if (findMatch[0]) alert(`You found the word: ${findMatch[0]}`);
+
+  }, [boardValues]);
 
   const handleDragLeave = () => {
     setHighlightedCell(null);
   };
 
   const linesToWords = (gameBoardLines: number[][]):string[] => {
-    return gameBoardLines.map((line) => {
+    const test = gameBoardLines.map((line) => {
+      // GameBoardCell values to word
+      console.log('cell values: ', line);
+      console.log('conversion:', line.map((id) => (boardValues[id]).toLowerCase()).join(''))
       return line.map((id) => (boardValues[id]).toLowerCase).join('');
     })
+    // console.log(test)
+    return test;
   }
 
   const updateTileBar = (droppedTileValue: string) => {
@@ -36,12 +53,6 @@ const GameBoard = () => {
     updatedValues[id] = value;
     setBoardValues(updatedValues);
     updateTileBar(value);
-    // Check a diagonal, vertical, or row for matching words
-    let wordsArray = linesToWords(gameBoardLines)
-    const findMatch = wordsArray.filter((word) => {
-      return trie.search(word);
-    })
-    if (findMatch[0]) alert(`You found the word: ${findMatch[0]}`)
   };
 
   return (
