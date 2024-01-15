@@ -30,7 +30,7 @@ export default observer(function Home() {
     <div className="flex h-screen min-h-screen flex-col bg-gray-500">
       <NavBar />
       <div className="flex flex-col-2 justify-center space-x-12">
-        <ScoreBar />
+        {/* <ScoreBar /> */}
         <Clock />
       </div>
       <GameBoard />
