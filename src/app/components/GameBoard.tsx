@@ -17,12 +17,11 @@ const GameBoard = () => {
     setTileValues([getRandomCapitalLetter(), getRandomCapitalLetter()]);
   }, []);
 
+
+  // Check for matches after the boardValues state has been updated
   useEffect(() => {
-    // Check for matches after the boardValues state has been updated
     const wordsArray = linesToWords(gameBoardLines);
-    console.log(wordsArray);
     const findMatch = wordsArray.filter((word) => trie.search(word));
-    // alert(findMatch[0])
     if (findMatch[0]) alert(`You found the word: ${findMatch[0]}`);
 
   }, [boardValues]);
@@ -32,19 +31,14 @@ const GameBoard = () => {
   };
 
   const linesToWords = (gameBoardLines: number[][]):string[] => {
-    const test = gameBoardLines.map((line) => {
+    return gameBoardLines.map((line) => {
       // GameBoardCell values to word
-      console.log('cell values: ', line);
-      console.log('conversion:', line.map((id) => (boardValues[id]).toLowerCase()).join(''))
-      return line.map((id) => (boardValues[id]).toLowerCase).join('');
+      return line.map((id) => (boardValues[id]).toLowerCase()).join('');
     })
-    // console.log(test)
-    return test;
   }
 
   const updateTileBar = (droppedTileValue: string) => {
     let temp = tileValues.filter((tile) => tile !== droppedTileValue);
-    // Update the tileValues state in the TileBar component
     setTileValues([...temp, getRandomCapitalLetter()]);
   };
 
