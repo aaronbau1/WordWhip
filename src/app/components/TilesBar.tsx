@@ -23,11 +23,10 @@ const TilesBar = ({ tileValues }: TilesBarProps) => {
       { 
         tileValues.map((value, index) => (
           <div
-          key={index}
-            // className='flex h-14 w-14 border-2 border-black/60 items-center 
-            // justify-center bg-gray-300 text-2xl font-bold text-gray-700 
-            // cursor-pointer m-1'
-            className="flex h-[10vw] w-[10vw] max-w-screen-md max-h-screen-md border-2 border-black/60 items-center justify-center bg-gray-300 text-2xl font-bold text-gray-700 cursor-pointer m-1"
+            key={index}
+            className="flex h-[10vw] w-[10vw] max-w-screen-md max-h-screen-md 
+            border-2 border-black/60 items-center justify-center bg-gray-300
+             text-2xl font-bold text-gray-700 cursor-pointer m-1"
 
             draggable
             onDragStart={(e) => handleOnDrag(e, value, index)}
