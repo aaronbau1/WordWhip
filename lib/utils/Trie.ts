@@ -1,5 +1,4 @@
-import validWords from "../data";
-import answers from "../data";
+import { validWords } from "../data";
 
 interface TrieNode {
   children: { [key: string]: TrieNode };

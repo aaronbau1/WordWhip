@@ -3,7 +3,7 @@ import GameBoardCell from "./GameBoardCell"
 import trie from "../../../lib/utils/Trie";
 import { gameBoardLines } from "../../../lib/data";
 import TilesBar from "./TilesBar";
-import { createSolutionLine, getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
+import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
 
 const GameBoard = () => {
 
