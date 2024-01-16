@@ -3,7 +3,7 @@ import GameBoardCell from "./GameBoardCell"
 import trie from "../../../lib/utils/Trie";
 import { gameBoardLines } from "../../../lib/data";
 import TilesBar from "./TilesBar";
-import { createSolutionLine, getRandomCapitalLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
+import { createSolutionLine, getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
 
 const GameBoard = () => {
 
@@ -14,65 +14,53 @@ const GameBoard = () => {
   //initialize the puzzle
   //BUG FOUND: IF BOTH ARE SAME LETTER, WILL UPDATE WITH ONLY ONE TILE IF PLACED
   useEffect(() => {
-    const solution = getRandomWord();
-    let solutionLine = getRandomLine();
-    const randomIndex = getRandomIndex();
-    let randomValues
-    // initializeBoardValues(solution, solutionLine, randomIndex);
-    do {
-      randomValues = boardValues.map((value, index) => {
-        if (solutionLine.includes(index) && index !== solutionLine[randomIndex]) {
-          return solution[solutionLine.indexOf(index)].toUpperCase();
-        } else {
-          return getRandomCapitalLetter();
-        }
-      });
-    } while (checkBoard(gameBoardLines, randomValues).length !== 0)
-  
-    setBoardValues(randomValues);
-    setTileValues([solution[randomIndex].toUpperCase()]);
+    const {solution, randomIndex, puzzleBoard} = createAPuzzle();
+    setBoardValues(puzzleBoard);
+    setTileValues([solution[randomIndex]]);
   }, []);
 
-  // Check for matches after the boardValues state has been updated
+  // Check for matches after placing a tile
   useEffect(() => {
-    const matchingWords = checkBoard(gameBoardLines, boardValues);
+    const matchingWords = checkBoard(boardValues);
     if (matchingWords.length > 0) {
       alert(`You found the word: ${matchingWords.join(", ")}`);
     }
   }, [boardValues]);
 
-  const checkBoard = (gameBoardLines: number[][], valueArray:string[]): string[] => {
-    const wordsArray = linesToWords(gameBoardLines, valueArray);
+  const createAPuzzle = () => {
+    const solution = getRandomWord();
+    const solutionLine = getRandomLine();
+    const randomIndex = getRandomIndex();
+    let puzzleBoard;
+    
+    do {
+      puzzleBoard = boardValues.map((value, index) => {
+        if (solutionLine.includes(index) && index !== solutionLine[randomIndex]) {
+          return solution[solutionLine.indexOf(index)];
+        } else {
+          return getRandomLetter();
+        }
+      });
+    } while (checkBoard(puzzleBoard).length !== 0)
+
+    return {solution, randomIndex, puzzleBoard}
+  }
+
+  const checkBoard = (boardArray:string[]): string[] => {
+    const wordsArray = linesToWords(boardArray);
     return wordsArray.filter((word) => trie.search(word));
   };
 
-  const initializeBoardValues = (solution:any, solutionLine:any, randomIndex:any) => {
-    solutionLine.splice(randomIndex,1)
-    let randomValues;
-    
-    do {
-      randomValues = boardValues.map((value, index) => {
-        if (solutionLine.includes(index)) {
-          return solution[solutionLine.indexOf(index)].toUpperCase();
-        } else {
-          return getRandomCapitalLetter();
-        }
-      })
-    } while (checkBoard(gameBoardLines, randomValues).length !== 0)
-
-    setBoardValues(randomValues);
-  };
-
-  const linesToWords = (gameBoardLines: number[][], valueArray:string[]):string[] => {
+  const linesToWords = (valueArray:string[]):string[] => {
     return gameBoardLines.map((line) => {
       // GameBoardCell values to word
-      return line.map((value) => (valueArray[value]).toLowerCase()).join('');
+      return line.map((value) => (valueArray[value])).join('');
     })
   }
 
   const updateTileBar = (droppedTileValue: string) => {
     let temp = tileValues.filter((tile) => tile !== droppedTileValue);
-    setTileValues([...temp, getRandomCapitalLetter()]);
+    setTileValues([...temp, getRandomLetter()]);
   };
 
   const handleTileDrop = (id: number, value: string) => {
@@ -89,7 +77,7 @@ const GameBoard = () => {
   return (
     <>
     <div className="flex justify-center mt-2">
-      <div className="w-6/12 h-6/12 aspect-square relative">
+      <div className="w-[50vw] h-[50vw] max-w-screen-md max-h-screen-md aspect-square relative">
         <div className="grid absolute inset-0 grid-cols-5 gap-0.5 p-1 rounded-md"
           onDragLeave={handleDragLeave}
         >
