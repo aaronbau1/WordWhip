@@ -1,4 +1,4 @@
-const validWords = [
+export const validWords = [
   "cigar",
   "rebut",
   "sissy",
@@ -2314,7 +2314,8 @@ const validWords = [
   "artsy",
   "rural",
   "shave"
-]
+].map(word => word.toUpperCase());
+
 
 export const gameBoardLines = [
   //rows
@@ -2333,5 +2334,3 @@ export const gameBoardLines = [
   [0, 6, 12, 18, 24],
   [4, 8, 12, 16, 20],
 ]
-
-export default validWords

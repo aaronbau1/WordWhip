@@ -1,4 +1,4 @@
-import validWords, { gameBoardLines } from "./data";
+import { validWords, gameBoardLines } from "./data";
 
 export const getRandomLetter = ():string => {
   // ASCII codes for capital letters range from 65 to 90
