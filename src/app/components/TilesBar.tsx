@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { getRandomCapitalLetter } from "../../../lib/hooks";
+import { getRandomLetter } from "../../../lib/hooks";
 
 interface TilesBarProps {
   tileValues: string[];
