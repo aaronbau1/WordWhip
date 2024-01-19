@@ -8,18 +8,29 @@ interface GameBoardCellProps {
   isMatched: boolean;
 }
 
-const winAnimation = {
-  animate: (index: number) => ({
-    rotateY: 0,
+const variants = {
+  highlight: {
+    backgroundColor: '#E53935',
     transition: {
-      delay: 0.2 * index,
+      duration:0,
     }
-  }),
+  },
+  normal: {
+    backgroundColor: '#E0E0E0'
+  },
+  win: {
+    backgroundColor: '#50C878',
+    rotateX: [0, 90, 0], 
+    transition: {
+      delay: 0.25,
+      duration: 1,
+    } 
+  }
 }
 
 const GameBoardCell = ({ id, value, onDrop, isMatched }: GameBoardCellProps) => {
   
-  const [isHighlighted, setIsHighlighted] = useState<boolean>(false)
+  const [isHighlighted, setIsHighlighted] = useState<boolean>(false);
   
   useEffect(() => {
     if (isMatched) {
@@ -46,21 +57,13 @@ const GameBoardCell = ({ id, value, onDrop, isMatched }: GameBoardCellProps) => 
 
   return (
     <motion.div className={`bg-gray-300 flex items-center justify-center text-2xl 
-      font-bold text-gray-700 border border-black/60
-      ${isHighlighted ? 'bg-red-600' : ''}
-      `}
+      font-bold text-gray-700 border border-black/60`}
+      // ${isHighlighted ? 'bg-red-600' : ''
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      animate={{ 
-        backgroundColor: isMatched ? '#50C878': '#E0E0E0',
-        rotateX: [0, isMatched ? 90 : 0, 0], 
-        transition: {
-          delay: 0.25 * id,
-          duration: 1,
-        } 
-        }}
-
+      animate={isMatched ? 'win' : (isHighlighted ? 'highlight' : 'normal')}
+      variants={variants}
     >
       {value}
     </motion.div>
