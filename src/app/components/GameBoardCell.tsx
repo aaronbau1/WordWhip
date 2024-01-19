@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { animate } from "framer-motion/dom"
 
 interface GameBoardCellProps {
   id: number,
@@ -8,7 +9,7 @@ interface GameBoardCellProps {
   isMatched: boolean;
 }
 
-const variants = {
+const getVariants = () => ({
   highlight: {
     backgroundColor: '#E53935',
     transition: {
@@ -26,12 +27,12 @@ const variants = {
       duration: 1,
     } 
   }
-}
+})
 
-const GameBoardCell = ({ id, value, onDrop, isMatched }: GameBoardCellProps) => {
+const GameBoardCell = ({ id, value, onDrop, isMatched, }: GameBoardCellProps) => {
   
   const [isHighlighted, setIsHighlighted] = useState<boolean>(false);
-  
+
   useEffect(() => {
     if (isMatched) {
       // Additional logic when the cell is matched
@@ -58,12 +59,11 @@ const GameBoardCell = ({ id, value, onDrop, isMatched }: GameBoardCellProps) => 
   return (
     <motion.div className={`bg-gray-300 flex items-center justify-center text-2xl 
       font-bold text-gray-700 border border-black/60`}
-      // ${isHighlighted ? 'bg-red-600' : ''
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       animate={isMatched ? 'win' : (isHighlighted ? 'highlight' : 'normal')}
-      variants={variants}
+      variants={getVariants()}
     >
       {value}
     </motion.div>

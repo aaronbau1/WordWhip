@@ -22,10 +22,9 @@ const GameBoard = () => {
 
   // Check for matches after placing a tile
   useEffect(() => {
-    const matchingWords = checkBoard(boardValues);
-    if (matchingWords.length > 0) {
-      setCellMatches(cellMatches.map((val, index) => index <= 4));
-      // alert(`You found the word: ${matchingWords.join(", ")}`);
+    const matchingWordObj = checkBoard(boardValues);
+    if (matchingWordObj.word.length > 0) {
+      setCellMatches(cellMatches.map((val, index) => matchingWordObj.line.includes(index)))
     }
   }, [boardValues]);
 
@@ -43,20 +42,20 @@ const GameBoard = () => {
           return getRandomLetter();
         }
       });
-    } while (checkBoard(puzzleBoard).length !== 0)
+    } while (checkBoard(puzzleBoard).word.length !== 0)
 
     return {solution, randomIndex, puzzleBoard}
   }
 
-  const checkBoard = (boardArray:string[]): string[] => {
+  const checkBoard = (boardArray:string[]): {word:string[], line:number[]} => {
     const wordsArray = linesToWords(boardArray);
-    return wordsArray.filter((word) => trie.search(word));
+    const solution = wordsArray.filter((word) => trie.search(word))
+    const solutionLine = gameBoardLines.filter((line) => (line.map((value) => (boardValues[value])).join('')) === solution[0])[0]
+    return {
+      word: solution,
+      line: solutionLine
+    };
   };
-
-  // const checkBoardMatch = (boardArray:string[]): string[] => {
-  //   const wordsArray = linesToWords(boardArray);
-  //   return wordsArray.filter((word) => trie.search(word));
-  // };
 
   const linesToWords = (valueArray:string[]):string[] => {
     return gameBoardLines.map((line) => {
