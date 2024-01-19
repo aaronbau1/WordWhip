@@ -10,6 +10,7 @@ const GameBoard = () => {
   const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
   const [boardValues, setBoardValues] = useState<string[]>(Array(25).fill(''));
   const [tileValues, setTileValues] = useState<string[]>([]);
+  const [cellMatches, setCellMatches] = useState<boolean[]>(Array(25).fill(false));
 
   //initialize the puzzle
   //BUG FOUND: IF BOTH ARE SAME LETTER, WILL UPDATE WITH ONLY ONE TILE IF PLACED
@@ -23,7 +24,8 @@ const GameBoard = () => {
   useEffect(() => {
     const matchingWords = checkBoard(boardValues);
     if (matchingWords.length > 0) {
-      alert(`You found the word: ${matchingWords.join(", ")}`);
+      setCellMatches(cellMatches.map((val, index) => index <= 4));
+      // alert(`You found the word: ${matchingWords.join(", ")}`);
     }
   }, [boardValues]);
 
@@ -50,6 +52,11 @@ const GameBoard = () => {
     const wordsArray = linesToWords(boardArray);
     return wordsArray.filter((word) => trie.search(word));
   };
+
+  // const checkBoardMatch = (boardArray:string[]): string[] => {
+  //   const wordsArray = linesToWords(boardArray);
+  //   return wordsArray.filter((word) => trie.search(word));
+  // };
 
   const linesToWords = (valueArray:string[]):string[] => {
     return gameBoardLines.map((line) => {
@@ -87,6 +94,7 @@ const GameBoard = () => {
               id={index}
               value={value}
               onDrop={handleTileDrop}
+              isMatched={cellMatches[index]}
             />
           ))}
         </div>
