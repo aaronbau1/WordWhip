@@ -9,9 +9,6 @@ interface GameBoardCellProps {
 }
 
 const winAnimation = {
-  initial: (isMatched: boolean) => ({
-    rotateY: isMatched ? 180 : 0,
-  }),
   animate: (index: number) => ({
     rotateY: 0,
     transition: {
@@ -51,13 +48,19 @@ const GameBoardCell = ({ id, value, onDrop, isMatched }: GameBoardCellProps) => 
     <motion.div className={`bg-gray-300 flex items-center justify-center text-2xl 
       font-bold text-gray-700 border border-black/60
       ${isHighlighted ? 'bg-red-600' : ''}
-      ${isMatched ? 'bg-green-500': ''}`}
+      `}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      variants={winAnimation}
-      initial="initial"
-      animate="animate"
+      animate={{ 
+        backgroundColor: isMatched ? '#50C878': '#E0E0E0',
+        rotateX: [0, isMatched ? 90 : 0, 0], 
+        transition: {
+          delay: 0.25 * id,
+          duration: 1,
+        } 
+        }}
+
     >
       {value}
     </motion.div>
