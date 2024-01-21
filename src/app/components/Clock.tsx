@@ -4,8 +4,8 @@ const Clock = () => {
   return (
     <div className='flex mt-3 items-center justify-center bg-white rounded-full font-semibold text-2xl'>
       <CountdownCircleTimer
-        isPlaying={true}
-        duration={10}
+        isPlaying={false}
+        duration={60}
         colors={['#006400', '#F7B801', '#A30000', '#A30000']}
         colorsTime={[8, 6, 2, 0]}
         isSmoothColorTransition
