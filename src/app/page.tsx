@@ -13,8 +13,7 @@ const Home = () => {
       <p className="mt-2 text-2xl text-center font-semibold">Can you find the 5 letter word using your tile?</p>
       <div className="mt-8 flex space-x-4">
         {/* <Link href='/play'> */}
-          {/* <Button variant="outline">How to play</Button> */}
-          <InfoModal />
+          <Button variant="outline">How to play</Button>
         {/* </Link> */}
         <Link href='/play'>
           <Button>Play</Button>

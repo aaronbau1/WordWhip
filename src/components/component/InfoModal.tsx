@@ -1,15 +1,31 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/dialog"
+import { useInfoModal } from "@/context/InfoModalContext"
+import { DialogClose } from "@radix-ui/react-dialog";
+import { Info } from "lucide-react";
+import { useEffect } from "react";
 
 export function InfoModal() {
+
+  const {isInfoModalOpen, openInfoModal, closeInfoModal } = useInfoModal();
+
+  // useEffect(() => {
+  //   // Open the modal logic based on the state
+  //   // isInfoModalOpen ? openInfoModal() : closeInfoModal();
+
+  // }, [isInfoModalOpen]);
+  
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Open Modal</Button>
+        {/* <Button variant="outline" onClick={openInfoModal}>Open Modal</Button> */}
+        <Info className='h-10 w-10 mr-5 text-white/50 cursor-pointer' onClick={openInfoModal}/>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Game Instructions</DialogTitle>
+          <DialogTitle>How to play WordWhip</DialogTitle>
           <DialogDescription>Follow these steps to play the game. Click close when you're done.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -19,9 +35,9 @@ export function InfoModal() {
           <p className="text-sm leading-7">Step 4: Reach the end of the level to progress to the next stage.</p>
         </div>
         <DialogFooter>
-          <div>
+          <DialogClose asChild>
             <Button variant="outline">Got it!</Button>
-          </div>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
