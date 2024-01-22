@@ -26,7 +26,7 @@ export function InfoModal() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>How to play WordWhip</DialogTitle>
-          <DialogDescription>Follow these steps to play the game. Click close when you're done.</DialogDescription>
+          <DialogDescription>Follow these steps to play the game. Click Got it! when you&apos;re done.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <p className="text-sm leading-7">Step 1: Choose your character from the selection screen.</p>
