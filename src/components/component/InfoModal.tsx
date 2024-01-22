@@ -17,19 +17,22 @@ export function InfoModal() {
         <Info className='h-10 w-10 mr-5 text-white/50 cursor-pointer' onClick={openInfoModal}/>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <DialogClose 
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
           <X className="h-4 w-4" onClick={closeInfoModal} />
           <span className="sr-only">Close</span>
         </DialogClose>
         <DialogHeader>
-          <DialogTitle>How to play WordWhip</DialogTitle>
-          <DialogDescription>Follow these steps to play the game. Click Got it! when you&apos;re done.</DialogDescription>
+          <DialogTitle className="font-2xl">How to play WordWhip</DialogTitle>
+          <DialogDescription className="font-semibold">You have 60 seconds to solve as many puzzles as possible.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <p className="text-sm leading-7">Step 1: Choose your character from the selection screen.</p>
-          <p className="text-sm leading-7">Step 2: Navigate through the game world using the arrow keys.</p>
-          <p className="text-sm leading-7">Step 3: Collect power-ups and avoid enemies to increase your score.</p>
-          <p className="text-sm leading-7">Step 4: Reach the end of the level to progress to the next stage.</p>
+          <p className="text-sm leading-7">&#x2022; Place your tile on the Gameboard to create a 5 letter word.</p>
+          <p className="text-sm leading-7">&#x2022; Placing the tile correctly adds time</p>
+          <p className="text-sm leading-7">&#x2022; Placing the tile incorrectly subtracts time and resuffles the board.</p>
+          <p className="text-sm leading-7">&#x2022; Be careful! The difficulty will ramp up as you solve more puzzles</p>
+          <p className="font-bold">Examples</p>
+          <p>Coming soon</p>
         </div>
         <DialogFooter>
           <DialogClose asChild>
