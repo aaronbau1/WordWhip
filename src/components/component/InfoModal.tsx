@@ -1,11 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/dialog"
+import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/infodialog"
 import { useInfoModal } from "@/context/InfoModalContext"
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Info, X } from "lucide-react";
-import { useEffect } from "react";
 
 export function InfoModal() {
 
@@ -14,7 +13,7 @@ export function InfoModal() {
   return (
     <Dialog open={isInfoModalOpen} onOpenChange={() => isInfoModalOpen ? closeInfoModal : openInfoModal}>
       <DialogTrigger asChild>
-        <Info className='h-10 w-10 mr-5 text-white/50 cursor-pointer' onClick={openInfoModal}/>
+        <Info className='h-10 w-10 mr-5 text-white/50 cursor-pointer hover:scale-105 hover:text-white/70' onClick={openInfoModal}/>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogClose 
