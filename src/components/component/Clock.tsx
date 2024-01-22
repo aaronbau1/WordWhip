@@ -1,3 +1,5 @@
+'use client'
+
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 const Clock = () => {

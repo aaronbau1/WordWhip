@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from "react";
 import GameBoardCell from "./GameBoardCell"
 import trie from "../../../lib/utils/Trie";
