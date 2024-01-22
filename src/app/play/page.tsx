@@ -1,9 +1,6 @@
-"use client"
-
-import { useState } from 'react';
-import NavBar from '../components/NavBar';
-import Clock from '../components/Clock';
-import GameBoard from '../components/GameBoard';
+import Clock from "@/components/component/Clock"
+import GameBoard from "@/components/component/GameBoard"
+import NavBar from "@/components/component/NavBar"
 
 const Play = () => {
 
