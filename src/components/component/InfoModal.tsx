@@ -4,26 +4,23 @@ import { Button } from "@/components/ui/button"
 import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/dialog"
 import { useInfoModal } from "@/context/InfoModalContext"
 import { DialogClose } from "@radix-ui/react-dialog";
-import { Info } from "lucide-react";
+import { Info, X } from "lucide-react";
 import { useEffect } from "react";
 
 export function InfoModal() {
 
   const {isInfoModalOpen, openInfoModal, closeInfoModal } = useInfoModal();
 
-  // useEffect(() => {
-  //   // Open the modal logic based on the state
-  //   // isInfoModalOpen ? openInfoModal() : closeInfoModal();
-
-  // }, [isInfoModalOpen]);
-  
   return (
-    <Dialog>
+    <Dialog open={isInfoModalOpen} onOpenChange={() => isInfoModalOpen ? closeInfoModal : openInfoModal}>
       <DialogTrigger asChild>
-        {/* <Button variant="outline" onClick={openInfoModal}>Open Modal</Button> */}
         <Info className='h-10 w-10 mr-5 text-white/50 cursor-pointer' onClick={openInfoModal}/>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
+        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+          <X className="h-4 w-4" onClick={closeInfoModal} />
+          <span className="sr-only">Close</span>
+        </DialogClose>
         <DialogHeader>
           <DialogTitle>How to play WordWhip</DialogTitle>
           <DialogDescription>Follow these steps to play the game. Click Got it! when you&apos;re done.</DialogDescription>
@@ -36,7 +33,7 @@ export function InfoModal() {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Got it!</Button>
+            <Button variant="outline" onClick={() => closeInfoModal()}>Got it!</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

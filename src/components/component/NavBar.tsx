@@ -1,10 +1,19 @@
+'use client'
+
 import { useInfoModal } from '@/context/InfoModalContext';
 import { Settings } from 'lucide-react';
 import { Info } from 'lucide-react';
 import Link from 'next/link';
 import { InfoModal } from './InfoModal';
+import { useEffect } from 'react';
 
 const NavBar = () => {
+
+  const {isInfoModalOpen, openInfoModal} = useInfoModal();
+
+  // useEffect(() => {
+  //   isInfoModalOpen ? openInfoModal() : closeInfoModal();
+  // }, [isInfoModalOpen]);
 
   return (
     <div className="flex h-14 w-full border-2 border-black items-center justify-between bg-gray-700">
