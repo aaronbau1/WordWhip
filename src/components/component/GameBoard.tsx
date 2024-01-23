@@ -6,6 +6,8 @@ import trie from "../../../lib/utils/Trie";
 import { gameBoardLines } from "../../../lib/data";
 import TilesBar from "./TilesBar";
 import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
+import Clock from "./Clock";
+import GameState from "./GameState";
 
 const GameBoard = () => {
 
@@ -84,24 +86,25 @@ const GameBoard = () => {
 
   return (
     <>
-    <div className="flex justify-center mt-2">
-      <div className="w-[50vw] h-[50vw] max-w-screen-md max-h-screen-md aspect-square relative">
-        <div className="grid absolute inset-0 grid-cols-5 gap-0.5 p-1 rounded-md"
-          onDragLeave={handleDragLeave}
-        >
-          {boardValues.map((value, index) => (
-            <GameBoardCell 
-              key={index} 
-              id={index}
-              value={value}
-              onDrop={handleTileDrop}
-              isMatched={cellMatches[index]}
-            />
-          ))}
+      <GameState />
+      <div className="flex justify-center mt-2">
+        <div className="w-[50vw] h-[50vw] max-w-screen-md max-h-screen-md aspect-square relative">
+          <div className="grid absolute inset-0 grid-cols-5 gap-0.5 p-1 rounded-md"
+            onDragLeave={handleDragLeave}
+          >
+            {boardValues.map((value, index) => (
+              <GameBoardCell 
+                key={index} 
+                id={index}
+                value={value}
+                onDrop={handleTileDrop}
+                isMatched={cellMatches[index]}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-    <TilesBar tileValues={tileValues}/>
+      <TilesBar tileValues={tileValues}/>
     </>
   )
 }
