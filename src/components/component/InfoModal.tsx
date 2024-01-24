@@ -13,7 +13,9 @@ export function InfoModal() {
   return (
     <Dialog open={isInfoModalOpen} onOpenChange={() => isInfoModalOpen ? closeInfoModal : openInfoModal}>
       <DialogTrigger asChild>
-        <Info className='h-10 w-10 mr-5 text-white/50 cursor-pointer hover:scale-105 hover:text-white/70' onClick={openInfoModal}/>
+        <Info className='h-8 w-8 mr-3 text-white/50 cursor-pointer hover:scale-105 hover:text-white/70
+        md:h-10 md:w-10 md:mr-5' onClick={openInfoModal}
+        />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogClose 

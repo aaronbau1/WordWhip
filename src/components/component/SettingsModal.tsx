@@ -9,7 +9,9 @@ export function SettingsModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Settings className='h-10 w-10 ml-5 text-white/50 cursor-pointer hover:scale-105 hover:text-white/70'/>
+        <Settings className='h-8 w-8 ml-3 text-white/50 cursor-pointer hover:scale-105 hover:text-white/70
+          md:h-10 md:w-10 md:mr-5'
+        />
       </DialogTrigger>
       <DialogContent className="dark:bg-gray-800">
         <DialogHeader>
