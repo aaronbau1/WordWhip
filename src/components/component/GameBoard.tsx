@@ -6,7 +6,6 @@ import trie from "../../../lib/utils/Trie";
 import { gameBoardLines } from "../../../lib/data";
 import TilesBar from "./TilesBar";
 import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
-import Clock from "./Clock";
 import GameState from "./GameState";
 
 const GameBoard = () => {
@@ -16,21 +15,16 @@ const GameBoard = () => {
   const [tileValues, setTileValues] = useState<string[]>([]);
   const [cellMatches, setCellMatches] = useState<boolean[]>(Array(25).fill(false));
 
-  //initialize the puzzle
-  //BUG FOUND: IF BOTH ARE SAME LETTER, WILL UPDATE WITH ONLY ONE TILE IF PLACED
   useEffect(() => {
+    initializeGame();
+  }, []); // Empty dependency array ensures it runs only once
+
+  const initializeGame = () => {
     const {solution, randomIndex, puzzleBoard} = createAPuzzle();
     setBoardValues(puzzleBoard);
     setTileValues([solution[randomIndex]]);
-  }, []);
-
-  // Check for matches after placing a tile
-  useEffect(() => {
-    const matchingWordObj = checkBoard(boardValues);
-    if (matchingWordObj.word.length > 0) {
-      setCellMatches(cellMatches.map((val, index) => matchingWordObj.line.includes(index)))
-    }
-  }, [boardValues]);
+    setCellMatches(Array(25).fill(false));
+  }
 
   const createAPuzzle = () => {
     const solution = getRandomWord();
@@ -68,16 +62,19 @@ const GameBoard = () => {
     })
   }
 
-  const updateTileBar = (droppedTileValue: string) => {
-    let temp = tileValues.filter((tile) => tile !== droppedTileValue);
-    setTileValues([...temp, getRandomLetter()]);
-  };
+  const checkForWin = () => {
+    const matchingWordObj = checkBoard(boardValues);
+    if (matchingWordObj.word.length > 0) {
+      setCellMatches(cellMatches.map((val, index) => matchingWordObj.line.includes(index)));
+    }
+    initializeGame()
+  }
 
   const handleTileDrop = (id: number, value: string) => {
     const updatedValues = [...boardValues];
     updatedValues[id] = value;
     setBoardValues(updatedValues);
-    updateTileBar(value);
+    checkForWin();
   };
 
   const handleDragLeave = () => {
