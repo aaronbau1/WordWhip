@@ -10,6 +10,7 @@ import LevelDashboard from "./LevelDashboard";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { addLoss, addWin } from "@/lib/features/gameState-slice";
+import { delay } from "@/lib/utils";
 
 const GameBoard = () => {
 
@@ -19,6 +20,8 @@ const GameBoard = () => {
   const [cellMatches, setCellMatches] = useState<boolean[]>(Array(25).fill(false));
   const [isInitializing, setIsInitializing] = useState(true);
   const [turnOver, setTurnOver] = useState(false);
+  const [puzzleLine, setPuzzleLine] = useState<number[]>([50, 50, 50, 50, 50]);
+  const [isWin, setIsWin] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -58,6 +61,7 @@ const GameBoard = () => {
       });
     } while (checkBoard(puzzleBoard).word.length !== 0)
 
+    setPuzzleLine(solutionLine);
     return {solution, randomIndex, puzzleBoard}
   }
 
@@ -81,18 +85,24 @@ const GameBoard = () => {
   const checkForWin = () => {
     const matchingWordObj = checkBoard(boardValues);
     if (matchingWordObj.word.length > 0) {
-      setCellMatches(cellMatches.map((_, index) => matchingWordObj.line.includes(index)));
       dispatch(addWin());
+      setCellMatches(cellMatches.map((_, index) => matchingWordObj.line.includes(index)));
+      setIsWin(true);
     } else {
       dispatch(addLoss());
+      setCellMatches(cellMatches.map((_, index) => puzzleLine.includes(index)));
     }
-    //let animation play out
-    const delay = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+    //delay to let animation play out
     delay(1250).then(() => {
-      setIsInitializing(true);
-      setTurnOver(false);
+      cleanUp();
     })
   } 
+
+  const cleanUp = () => {
+    setIsInitializing(true);
+    setTurnOver(false);
+    setIsWin(false);
+  }
 
   const handleTileDrop = (id: number, value: string) => {
     const updatedValues = [...boardValues];
@@ -120,6 +130,7 @@ const GameBoard = () => {
                 value={value}
                 onDrop={handleTileDrop}
                 isMatched={cellMatches[index]}
+                isWin={isWin}
               />
             ))}
           </div>

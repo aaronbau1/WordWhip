@@ -1,10 +1,7 @@
 'use client'
 
 import Clock from "./Clock";
-import { Button } from "../ui/button";
-import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/lib/store";
-import { addWin, clearWinsLosses, addLoss } from "@/lib/features/gameState-slice";
+import { useAppSelector } from "@/lib/store";
 
 interface WinCounterProps {
   wins: number;
@@ -37,8 +34,6 @@ const LossCounter = ({ losses }: LossCounterProps) => {
     </div>
   );
 };
-
-
 
 const LevelDashboard = () => {
   const wins = useAppSelector((state) => state.gameState.value.wins);
