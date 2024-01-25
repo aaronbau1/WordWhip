@@ -2,13 +2,13 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import gameStateReducer from './features/gameState-slice';
-import infoModalReducer from './features/infoModal-slice';
+import settingsReducer from './features/settings-slice';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
 export const store = configureStore({
   reducer: {
     gameState: gameStateReducer,
-    infoModal: infoModalReducer
+    settings: settingsReducer,
   }
 })
 
