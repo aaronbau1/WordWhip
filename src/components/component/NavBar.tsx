@@ -10,7 +10,7 @@ import { SettingsModal } from './SettingsModal';
 
 const NavBar = () => {
 
-  const {isInfoModalOpen, openInfoModal} = useInfoModal();
+  // const {isInfoModalOpen, openInfoModal} = useInfoModal();
 
   return (
     <div className="flex h-16 md:h-[4.25rem] w-full border-2 border-black items-center justify-between bg-gray-700">
@@ -18,7 +18,7 @@ const NavBar = () => {
       <div className="text-4xl md:text-5xl font-bold uppercase text-transparent bg-clip-text bg-gradient-to-br from-red-700 to-yellow-400 top-0">
         <Link href='/'>WordWhip</Link>
       </div>
-      <InfoModal />
+      {/* <InfoModal /> */}
     </div>
   )
 }
