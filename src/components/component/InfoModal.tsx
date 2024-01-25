@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { openModal, closeModal } from "@/lib/features/infoModal-slice";
 
 export function InfoModal() {
-  const isOpen = useAppSelector((state) => state.infoModal.value.wins);
+  const isOpen = useAppSelector((state) => state.infoModal.value.isOpen);
 
   const dispatch = useDispatch<AppDispatch>();
 
