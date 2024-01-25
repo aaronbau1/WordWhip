@@ -1,4 +1,3 @@
-import Clock from "@/components/component/Clock"
 import GameBoard from "@/components/component/GameBoard"
 import NavBar from "@/components/component/NavBar"
 

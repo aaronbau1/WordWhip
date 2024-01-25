@@ -6,7 +6,7 @@ import trie from "../../../lib/utils/Trie";
 import { gameBoardLines } from "../../../lib/data";
 import TilesBar from "./TilesBar";
 import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
-import GameState from "./GameState";
+import LevelDashboard from "./LevelDashboard";
 
 const GameBoard = () => {
 
@@ -83,7 +83,7 @@ const GameBoard = () => {
 
   return (
     <>
-      <GameState />
+      <LevelDashboard />
       <div className="flex justify-center mt-2">
         <div className="w-[50vw] h-[50vw] max-w-screen-md max-h-screen-md aspect-square relative">
           <div className="grid absolute inset-0 grid-cols-5 gap-0.5 p-1 rounded-md"

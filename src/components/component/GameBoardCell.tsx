@@ -39,6 +39,10 @@ const GameBoardCell = ({ id, value, onDrop, isMatched, }: GameBoardCellProps) =>
     }
   }, [isMatched]);
   
+  // const handleWinAnimationComplete = () => {
+    
+  // };
+
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsHighlighted(true);
@@ -63,6 +67,7 @@ const GameBoardCell = ({ id, value, onDrop, isMatched, }: GameBoardCellProps) =>
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       animate={isMatched ? 'win' : (isHighlighted ? 'highlight' : 'normal')}
+      // onAnimationComplete={isMatched ? handleWinAnimationComplete : undefined}
       variants={getVariants()}
     >
       {value}

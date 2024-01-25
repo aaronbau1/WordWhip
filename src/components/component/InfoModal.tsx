@@ -2,16 +2,27 @@
 
 import { Button } from "@/components/ui/button"
 import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/infodialog"
-import { useInfoModal } from "@/context/InfoModalContext"
+import { AppDispatch, useAppSelector } from "@/lib/store";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Info, X } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { openModal, closeModal } from "@/lib/features/infoModal-slice";
 
 export function InfoModal() {
+  const isOpen = useAppSelector((state) => state.infoModal.value.wins);
 
-  const {isInfoModalOpen, openInfoModal, closeInfoModal } = useInfoModal();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const closeInfoModal = () => {
+    dispatch(closeModal());
+  }
+
+  const openInfoModal = () => {
+    dispatch(openModal());
+  }
 
   return (
-    <Dialog open={isInfoModalOpen} onOpenChange={() => isInfoModalOpen ? closeInfoModal : openInfoModal}>
+    <Dialog open={isOpen} onOpenChange={() => isOpen ? closeInfoModal : openInfoModal}>
       <DialogTrigger asChild>
         <Info className='h-8 w-8 mr-3 text-white/50 cursor-pointer hover:scale-105 hover:text-white/70
         md:h-10 md:w-10 md:mr-5' onClick={openInfoModal}

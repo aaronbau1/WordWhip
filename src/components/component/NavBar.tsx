@@ -1,6 +1,5 @@
 'use client'
 
-import { useInfoModal } from '@/context/InfoModalContext';
 import { Settings } from 'lucide-react';
 import { Info } from 'lucide-react';
 import Link from 'next/link';

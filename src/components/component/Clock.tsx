@@ -8,8 +8,8 @@ const Clock = () => {
       <CountdownCircleTimer
         isPlaying={false}
         duration={60}
-        colors={['#006400', '#F7B801', '#A30000', '#A30000']}
-        colorsTime={[8, 6, 2, 0]}
+        colors={['#50C878', '#F7B801', '#A30000', '#A30000']}
+        colorsTime={[45, 30, 15, 0]}
         isSmoothColorTransition
         onComplete={() => {alert('u lose noob')}}
         size={80}
