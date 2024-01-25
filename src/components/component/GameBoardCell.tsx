@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { animate } from "framer-motion/dom"
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { addWin } from "@/lib/features/gameState-slice";
 
 interface GameBoardCellProps {
   id: number,
@@ -33,14 +36,10 @@ const GameBoardCell = ({ id, value, onDrop, isMatched, }: GameBoardCellProps) =>
   
   const [isHighlighted, setIsHighlighted] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (isMatched) {
-      // Additional logic when the cell is matched
-    }
-  }, [isMatched]);
+  const dispatch = useDispatch<AppDispatch>();
   
   // const handleWinAnimationComplete = () => {
-    
+  //   dispatch(addWin());
   // };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {

@@ -4,7 +4,7 @@ import Clock from "./Clock";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/store";
-import { addWin, clearWinsLosses } from "@/lib/features/gameState-slice";
+import { addWin, clearWinsLosses, addLoss } from "@/lib/features/gameState-slice";
 
 interface WinCounterProps {
   wins: number;
@@ -41,33 +41,15 @@ const LossCounter = ({ losses }: LossCounterProps) => {
 
 
 const LevelDashboard = () => {
-  // const [losses, setLosses] = useState<number>(0);
   const wins = useAppSelector((state) => state.gameState.value.wins);
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  const onClickAddWin = () => {
-    dispatch(addWin());
-  };
-
-  const onClickClearAll = () => {
-    dispatch(clearWinsLosses());
-  };
-
-  // const handleLoss = () => {
-  //   setLosses(losses + 1);
-  // };
+  const losses = useAppSelector((state) => state.gameState.value.losses);
   
   return (
     <>
-    <div className="flex flex-col-2 justify-center space-x-12">
-      <Button onClick={onClickAddWin}>win</Button>
-      <Button onClick={onClickClearAll}>clear</Button>
-    </div>
     <div className="flex flex-col-3 justify-center space-x-8">
       <WinCounter wins={wins} />
       <Clock />
-      <LossCounter losses={2} />
+      <LossCounter losses={losses} />
     </div>
     </>
   )

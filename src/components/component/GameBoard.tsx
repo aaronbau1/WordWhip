@@ -7,6 +7,9 @@ import { gameBoardLines } from "../../../lib/data";
 import TilesBar from "./TilesBar";
 import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
 import LevelDashboard from "./LevelDashboard";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { addWin } from "@/lib/features/gameState-slice";
 
 const GameBoard = () => {
 
@@ -15,9 +18,15 @@ const GameBoard = () => {
   const [tileValues, setTileValues] = useState<string[]>([]);
   const [cellMatches, setCellMatches] = useState<boolean[]>(Array(25).fill(false));
 
+  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     initializeGame();
   }, []); // Empty dependency array ensures it runs only once
+
+  useEffect(() => {
+    checkForWin();
+  }, [boardValues])
 
   const initializeGame = () => {
     const {solution, randomIndex, puzzleBoard} = createAPuzzle();
@@ -63,18 +72,20 @@ const GameBoard = () => {
   }
 
   const checkForWin = () => {
+    console.log(boardValues)
     const matchingWordObj = checkBoard(boardValues);
+    // alert(`${matchingWordObj.word[0]}`);
     if (matchingWordObj.word.length > 0) {
-      setCellMatches(cellMatches.map((val, index) => matchingWordObj.line.includes(index)));
+      setCellMatches(cellMatches.map((_, index) => matchingWordObj.line.includes(index)));
+      dispatch(addWin());
     }
-    initializeGame()
+    // initializeGame();
   }
 
   const handleTileDrop = (id: number, value: string) => {
     const updatedValues = [...boardValues];
     updatedValues[id] = value;
     setBoardValues(updatedValues);
-    checkForWin();
   };
 
   const handleDragLeave = () => {

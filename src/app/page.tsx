@@ -1,15 +1,13 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { AppDispatch, useAppSelector } from "@/lib/store";
+import { AppDispatch } from "@/lib/store";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { openModal } from "@/lib/features/infoModal-slice";
+import { openInfoModal } from "@/lib/features/settings-slice";
 
 const Home = () => {
-  const isOpen = useAppSelector((state) => state.infoModal.value.isOpen);
-
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -19,7 +17,7 @@ const Home = () => {
       <p className="mt-2 text-2xl text-center font-semibold">Can you find the 5 letter word using your tile?</p>
       <div className="mt-8 flex space-x-4">
         <Link href='/play'>
-          <Button variant="outline" onClick={() => dispatch(openModal())}>How to play</Button>
+          <Button variant="outline" onClick={() => dispatch(openInfoModal())}>How to play</Button>
         </Link>
         <Link href='/play'>
           <Button>Play</Button>
