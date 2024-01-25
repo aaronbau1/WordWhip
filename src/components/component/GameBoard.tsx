@@ -9,7 +9,7 @@ import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from ".
 import LevelDashboard from "./LevelDashboard";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
-import { addWin } from "@/lib/features/gameState-slice";
+import { addLoss, addWin } from "@/lib/features/gameState-slice";
 
 const GameBoard = () => {
 
@@ -17,16 +17,23 @@ const GameBoard = () => {
   const [boardValues, setBoardValues] = useState<string[]>(Array(25).fill(''));
   const [tileValues, setTileValues] = useState<string[]>([]);
   const [cellMatches, setCellMatches] = useState<boolean[]>(Array(25).fill(false));
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [turnOver, setTurnOver] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    initializeGame();
-  }, []); // Empty dependency array ensures it runs only once
+    if (turnOver) {
+      checkForWin();
+    }
+  }, [turnOver])
 
   useEffect(() => {
-    checkForWin();
-  }, [boardValues])
+    if (isInitializing) {
+      initializeGame();
+      setIsInitializing(false);
+    }
+  }, [isInitializing]);
 
   const initializeGame = () => {
     const {solution, randomIndex, puzzleBoard} = createAPuzzle();
@@ -72,20 +79,26 @@ const GameBoard = () => {
   }
 
   const checkForWin = () => {
-    console.log(boardValues)
     const matchingWordObj = checkBoard(boardValues);
-    // alert(`${matchingWordObj.word[0]}`);
     if (matchingWordObj.word.length > 0) {
       setCellMatches(cellMatches.map((_, index) => matchingWordObj.line.includes(index)));
       dispatch(addWin());
+    } else {
+      dispatch(addLoss());
     }
-    // initializeGame();
-  }
+    //let animation play out
+    const delay = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+    delay(1250).then(() => {
+      setIsInitializing(true);
+      setTurnOver(false);
+    })
+  } 
 
   const handleTileDrop = (id: number, value: string) => {
     const updatedValues = [...boardValues];
     updatedValues[id] = value;
     setBoardValues(updatedValues);
+    setTurnOver(true);
   };
 
   const handleDragLeave = () => {
@@ -117,4 +130,4 @@ const GameBoard = () => {
   )
 }
 
-export default GameBoard
+export default GameBoard;
