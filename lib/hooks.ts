@@ -17,8 +17,8 @@ export const getRandomLine = (): number[] => {
   return gameBoardLines[randomIndex].slice();
 }
 
-export const getRandomIndex = (): number => {
-  const randomIndex = Math.floor(Math.random() * 5);
+export const getRandomIndex = (array: string[]): number => {
+  const randomIndex = Math.floor(Math.random() * array.length);
   return randomIndex
 }
 

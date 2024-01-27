@@ -7,6 +7,8 @@ import { AppDispatch, useAppSelector } from "@/lib/store";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Info } from "lucide-react";
 import { useDispatch } from "react-redux";
+import { getRandomIndex } from "../../../lib/hooks";
+import { levelUpOptions } from "../../../lib/data";
 
 export function LevelUpModal() {
   const isOpen = useAppSelector((state) => state.gameState.value.levelUpModalIsOpen);
@@ -28,15 +30,15 @@ export function LevelUpModal() {
           <DialogTitle className="font-2xl">Level Up!</DialogTitle>
           <DialogDescription className="font-semibold">How would you like to increase the difficulty?</DialogDescription>
         </DialogHeader>
-       
         <DialogFooter>
           <DialogClose asChild>
             <div className="flex justify-center mx-2">
             <Button variant="outline" onClick={handleModalClose}>
-              <Info />
-              Add a row
+              {levelUpOptions[getRandomIndex(levelUpOptions)]}
             </Button>
-            <Button variant="outline" className="ml-4" onClick={handleModalClose}>Add a tile</Button>
+            <Button variant="outline" className="ml-4" onClick={handleModalClose}>
+              {levelUpOptions[getRandomIndex(levelUpOptions)]}
+            </Button>
             </div>
           </DialogClose>
         </DialogFooter>

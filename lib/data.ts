@@ -2330,7 +2330,16 @@ export const gameBoardLines = [
   // [2, 7, 12, 17, 22],
   // [3, 8, 13, 18, 23],
   // [4, 9, 14, 19, 24],
-  // //diagonals
+  //diagonals
   // [0, 6, 12, 18, 24],
   // [20, 16, 12, 8, 4],
+]
+
+export const levelUpOptions = [
+  'Add a Row',
+  'Add a Column',
+  'Add a Tile',
+  'Increase the Word Length',
+  'Words Appear in Columns',
+  'Words Appear Diagonally',
 ]
