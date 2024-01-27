@@ -72,5 +72,5 @@ export const gameState = createSlice({
   }
 })
 
-export const { addWin, addLoss, clearWinsLosses } = gameState.actions;
+export const { addWin, addLoss, clearWinsLosses, addLevel } = gameState.actions;
 export default gameState.reducer;

@@ -8,9 +8,10 @@ import TilesBar from "./TilesBar";
 import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
 import LevelDashboard from "./LevelDashboard";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/store";
-import { addLoss, addWin } from "@/lib/features/gameState-slice";
+import { AppDispatch, useAppSelector } from "@/lib/store";
+import { addLoss, addWin, addLevel } from "@/lib/features/gameState-slice";
 import { delay } from "@/lib/utils";
+import { LevelUpModal } from "./LevelUpModal";
 
 const GameBoard = () => {
 
@@ -24,6 +25,9 @@ const GameBoard = () => {
   const [isWin, setIsWin] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
+  const wins = useAppSelector((state) => state.gameState.value.wins);
+  const losses = useAppSelector((state) => state.gameState.value.losses);
+  const level = useAppSelector((state) => state.gameState.value.level);
 
   useEffect(() => {
     if (turnOver) {
@@ -94,6 +98,12 @@ const GameBoard = () => {
     }
     //delay to let animation play out
     delay(1250).then(() => {
+      // level is added after render so win or loss always lags one behind
+      if (wins >= 2 ) {
+        dispatch(addLevel());
+      } else if (losses >= 2) {
+        alert('u lose, play again?');
+      }
       cleanUp();
     })
   } 
@@ -117,6 +127,7 @@ const GameBoard = () => {
 
   return (
     <>
+      <LevelUpModal />
       <LevelDashboard />
       <div className="flex justify-center mt-2">
         <div className="w-[50vw] h-[50vw] max-w-screen-md max-h-screen-md aspect-square relative">
