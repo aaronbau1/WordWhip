@@ -9,6 +9,7 @@ import { Info } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getRandomIndex } from "../../../lib/hooks";
 import { levelUpOptions } from "../../../lib/data";
+import { addColumn, addRow } from "@/lib/features/levelState-slice";
 
 export function LevelUpModal() {
   const isOpen = useAppSelector((state) => state.gameState.value.levelUpModalIsOpen);
@@ -36,6 +37,21 @@ export function LevelUpModal() {
     }
   }
 
+  const addDifficulty = (option:string) => {
+    switch(option) {
+      case 'Add a Row':
+        dispatch(addRow());
+        break;
+      case 'Add a Column':
+        dispatch(addColumn());
+        break;
+    }
+    handleModalClose();
+  }
+
+  const option1 = chooseDifficulty(wordLength);
+  const option2 = chooseDifficulty(wordLength);
+
   return (
     <Dialog open={isOpen} onOpenChange={() => isOpen ? handleModalClose : handleModalOpen}>
       <DialogContent className="sm:max-w-[425px]">        
@@ -46,11 +62,11 @@ export function LevelUpModal() {
         <DialogFooter>
           <DialogClose asChild>
             <div className="flex justify-center mx-2">
-            <Button variant="outline" onClick={handleModalClose}>
-              {chooseDifficulty(wordLength)}
+            <Button variant="outline" onClick={() => addDifficulty(option1)}>
+              {option1}
             </Button>
-            <Button variant="outline" className="ml-4" onClick={handleModalClose}>
-              {chooseDifficulty(wordLength)}
+            <Button variant="outline" className="ml-4" onClick={() => addDifficulty(option2)}>
+              {option2}
             </Button>
             </div>
           </DialogClose>
