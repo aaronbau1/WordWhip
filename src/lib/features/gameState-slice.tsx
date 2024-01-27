@@ -18,6 +18,9 @@ interface gameStateState {
   gameBoardLines: number[];
   wordLength: number;
   tiles: number;
+
+  //turn progression
+  levelUpModalIsOpen: boolean;
 }
 
 const initialState = {
@@ -31,6 +34,8 @@ const initialState = {
     gameBoardLines: [0, 1, 2, 3, 4],
     wordLength: 5,
     tiles: 1,
+
+    levelUpModalIsOpen: false,
   } as gameStateState
 } as InitialState;
 
@@ -69,8 +74,21 @@ export const gameState = createSlice({
     addTile: (state) => {
       state.value.tiles += 1;
     },
+    openLevelUpModal: (state) => {
+      state.value.levelUpModalIsOpen = true;
+    },
+    closeLevelUpModal: (state) => {
+      state.value.levelUpModalIsOpen = false;
+    }
   }
 })
 
-export const { addWin, addLoss, clearWinsLosses, addLevel } = gameState.actions;
+export const { 
+  addWin, 
+  addLoss, 
+  clearWinsLosses, 
+  addLevel, 
+  openLevelUpModal,
+  closeLevelUpModal, 
+} = gameState.actions;
 export default gameState.reducer;

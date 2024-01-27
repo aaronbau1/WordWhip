@@ -9,8 +9,9 @@ import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from ".
 import LevelDashboard from "./LevelDashboard";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/store";
-import { addLoss, addWin, addLevel } from "@/lib/features/gameState-slice";
+import { addLoss, addWin, addLevel, openLevelUpModal } from "@/lib/features/gameState-slice";
 import { delay } from "@/lib/utils";
+import { Button } from "../ui/button";
 import { LevelUpModal } from "./LevelUpModal";
 
 const GameBoard = () => {
@@ -104,6 +105,7 @@ const GameBoard = () => {
       } else if (losses >= 2) {
         alert('u lose, play again?');
       }
+      dispatch(openLevelUpModal())
       cleanUp();
     })
   } 

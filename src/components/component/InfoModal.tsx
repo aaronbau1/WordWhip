@@ -13,25 +13,25 @@ export function InfoModal() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleInfoModalClose = () => {
+  const handleModalClose = () => {
     dispatch(closeInfoModal());
   }
 
-  const handleInfoModalOpen = () => {
+  const handleModalOpen = () => {
     dispatch(openInfoModal());
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => isOpen ? handleInfoModalClose : handleInfoModalOpen}>
+    <Dialog open={isOpen} onOpenChange={() => isOpen ? handleModalClose : handleModalOpen}>
       <DialogTrigger asChild>
         <Info className='h-8 w-8 mr-3 text-white/50 cursor-pointer hover:scale-105 hover:text-white/70
-        md:h-10 md:w-10 md:mr-5' onClick={handleInfoModalOpen}
+        md:h-10 md:w-10 md:mr-5' onClick={handleModalOpen}
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogClose 
           className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <X className="h-4 w-4" onClick={handleInfoModalClose} />
+          <X className="h-4 w-4" onClick={handleModalClose} />
           <span className="sr-only">Close</span>
         </DialogClose>
         <DialogHeader>
@@ -48,7 +48,7 @@ export function InfoModal() {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" onClick={handleInfoModalClose}>Got it!</Button>
+            <Button variant="outline" onClick={handleModalClose}>Got it!</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
