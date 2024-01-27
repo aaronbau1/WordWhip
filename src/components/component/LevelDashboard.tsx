@@ -38,7 +38,7 @@ const LossCounter = ({ losses }: LossCounterProps) => {
 const LevelDashboard = () => {
   const wins = useAppSelector((state) => state.gameState.value.wins);
   const losses = useAppSelector((state) => state.gameState.value.losses);
-  const level = useAppSelector((state) => state.gameState.value.level);
+  const level = useAppSelector((state) => state.levelState.value.level);
   
   return (
     <>

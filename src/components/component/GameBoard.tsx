@@ -9,10 +9,11 @@ import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from ".
 import LevelDashboard from "./LevelDashboard";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/store";
-import { addLoss, addWin, addLevel, openLevelUpModal } from "@/lib/features/gameState-slice";
+import { addLoss, addWin, openLevelUpModal } from "@/lib/features/gameState-slice";
 import { delay } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { LevelUpModal } from "./LevelUpModal";
+import { addLevel } from "@/lib/features/levelState-slice";
 
 const GameBoard = () => {
 
@@ -28,7 +29,7 @@ const GameBoard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const wins = useAppSelector((state) => state.gameState.value.wins);
   const losses = useAppSelector((state) => state.gameState.value.losses);
-  const level = useAppSelector((state) => state.gameState.value.level);
+  const level = useAppSelector((state) => state.levelState.value.level);
 
   useEffect(() => {
     if (turnOver) {
@@ -53,7 +54,7 @@ const GameBoard = () => {
   const createAPuzzle = () => {
     const solution = getRandomWord();
     const solutionLine = getRandomLine();
-    const randomIndex = getRandomIndex();
+    const randomIndex = getRandomIndex(solution.split(''));
     let puzzleBoard;
     
     do {
