@@ -12,6 +12,7 @@ import { levelUpOptions } from "../../../lib/data";
 
 export function LevelUpModal() {
   const isOpen = useAppSelector((state) => state.gameState.value.levelUpModalIsOpen);
+  const wordLength = useAppSelector((state) => state.levelState.value.wordLength);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -21,6 +22,18 @@ export function LevelUpModal() {
 
   const handleModalOpen = () => {
     dispatch(openLevelUpModal());
+  }
+
+  const chooseDifficulty = (wordLength: number) => {
+    if (wordLength <= 4) {
+      return levelUpOptions[getRandomIndex(levelUpOptions)]
+    } else {
+      let difficulty;
+      do {
+        difficulty = levelUpOptions[getRandomIndex(levelUpOptions)];
+      } while (difficulty !== 'Increase the Word Length');
+      return difficulty;
+    }
   }
 
   return (
@@ -34,10 +47,10 @@ export function LevelUpModal() {
           <DialogClose asChild>
             <div className="flex justify-center mx-2">
             <Button variant="outline" onClick={handleModalClose}>
-              {levelUpOptions[getRandomIndex(levelUpOptions)]}
+              {chooseDifficulty(wordLength)}
             </Button>
             <Button variant="outline" className="ml-4" onClick={handleModalClose}>
-              {levelUpOptions[getRandomIndex(levelUpOptions)]}
+              {chooseDifficulty(wordLength)}
             </Button>
             </div>
           </DialogClose>
