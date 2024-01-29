@@ -19,12 +19,12 @@ const TilesBar = ({ tileValues }: TilesBarProps) => {
   };
 
   return (
-    <div className="flex items-center justify-center pt-6 pb-4">
+    <div className="flex items-center justify-center">
       { 
         tileValues.map((value, index) => (
           <div
             key={index}
-            className="flex h-[10vw] w-[10vw] max-w-screen-md max-h-screen-md 
+            className="flex w-[10vw] h-[10vw] md:h-[70px] md:w-[70px] max-w-screen-md max-h-screen-md 
             border-2 border-black/60 items-center justify-center bg-gray-300
              text-2xl font-bold text-gray-700 cursor-pointer m-1"
 
