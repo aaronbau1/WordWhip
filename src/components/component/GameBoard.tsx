@@ -1,35 +1,41 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import GameBoardCell from "./GameBoardCell"
 import trie from "../../../lib/utils/Trie";
-import { gameBoardLines } from "../../../lib/data";
 import TilesBar from "./TilesBar";
 import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from "../../../lib/hooks";
 import LevelDashboard from "./LevelDashboard";
-import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/lib/store";
+import { connect, useDispatch } from "react-redux";
+import { AppDispatch, RootState, useAppSelector } from "@/lib/store";
 import { addLoss, addWin, openLevelUpModal } from "@/lib/features/gameState-slice";
 import { delay } from "@/lib/utils";
-import { Button } from "../ui/button";
-import { LevelUpModal } from "./LevelUpModal";
-import { addLevel } from "@/lib/features/levelState-slice";
+import LevelUpModal from "./LevelUpModal";
+import { addLevel, levelUpPhaseEnd, levelUpPhaseStart } from "@/lib/features/levelState-slice";
 
-const GameBoard = () => {
+interface GameBoardProps {
+  levelUpPhase: boolean;
+  gameBoardLines: number[][];
+  rows:number;
+}
 
-  const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
-  const [boardValues, setBoardValues] = useState<string[]>(Array(25).fill(''));
-  const [tileValues, setTileValues] = useState<string[]>([]);
-  const [cellMatches, setCellMatches] = useState<boolean[]>(Array(25).fill(false));
-  const [isInitializing, setIsInitializing] = useState(true);
-  const [turnOver, setTurnOver] = useState(false);
-  const [puzzleLine, setPuzzleLine] = useState<number[]>([50, 50, 50, 50, 50]);
-  const [isWin, setIsWin] = useState(false);
+const GameBoard = ({ levelUpPhase, gameBoardLines,rows}:GameBoardProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const wins = useAppSelector((state) => state.gameState.value.wins);
   const losses = useAppSelector((state) => state.gameState.value.losses);
-  const level = useAppSelector((state) => state.levelState.value.level);
+  const columns = useAppSelector((state) => state.levelState.value.columns);
+  const columnLines = useAppSelector((state) => state.levelState.value.columnLines);
+  const wordLength = useAppSelector((state) => state.levelState.value.wordLength);
+  
+  const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
+  const [boardValues, setBoardValues] = useState<string[]>(Array(rows*columns).fill(''));
+  const [tileValues, setTileValues] = useState<string[]>([]);
+  const [cellMatches, setCellMatches] = useState<boolean[]>(Array(rows*columns).fill(false));
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [turnOver, setTurnOver] = useState(false);
+  const [puzzleLine, setPuzzleLine] = useState<number[]>([50, 50, 50]);
+  const [isWin, setIsWin] = useState(false);
 
   useEffect(() => {
     if (turnOver) {
@@ -38,22 +44,29 @@ const GameBoard = () => {
   }, [turnOver])
 
   useEffect(() => {
+    if (levelUpPhase) {
+      cleanUp();
+      dispatch(levelUpPhaseEnd());
+    }
+  }, [levelUpPhase])
+
+  useEffect(() => {
     if (isInitializing) {
       initializeGame();
       setIsInitializing(false);
     }
-  }, [isInitializing]);
+  }, [isInitializing, boardValues, gameBoardLines])
 
   const initializeGame = () => {
-    const {solution, randomIndex, puzzleBoard} = createAPuzzle();
+    const {solution, randomIndex, puzzleBoard, solutionLine} = createAPuzzle();
     setBoardValues(puzzleBoard);
     setTileValues([solution[randomIndex]]);
-    setCellMatches(Array(25).fill(false));
+    setCellMatches(Array(rows*columns).fill(false));
   }
 
   const createAPuzzle = () => {
     const solution = getRandomWord();
-    const solutionLine = getRandomLine();
+    const solutionLine = getRandomLine(wordLength, gameBoardLines);
     const randomIndex = getRandomIndex(solution.split(''));
     let puzzleBoard;
     
@@ -68,12 +81,12 @@ const GameBoard = () => {
     } while (checkBoard(puzzleBoard).word.length !== 0)
 
     setPuzzleLine(solutionLine);
-    return {solution, randomIndex, puzzleBoard}
+    return {solution, randomIndex, puzzleBoard, solutionLine}
   }
 
   const checkBoard = (boardArray:string[]): {word:string[], line:number[]} => {
     const wordsArray = linesToWords(boardArray);
-    const solution = wordsArray.filter((word) => trie.search(word))
+    const solution = wordsArray.filter((word) => trie.search(word));
     const solutionLine = gameBoardLines.filter((line) => (line.map((value) => (boardValues[value])).join('')) === solution[0])[0]
     return {
       word: solution,
@@ -104,10 +117,8 @@ const GameBoard = () => {
       if (wins >= 2 ) {
         dispatch(addLevel());
       } else if (losses >= 2) {
-        alert('u lose, play again?');
       }
       dispatch(openLevelUpModal())
-      cleanUp();
     })
   } 
 
@@ -132,27 +143,38 @@ const GameBoard = () => {
     <>
       <LevelUpModal />
       <LevelDashboard />
-      <div className="flex justify-center mt-2">
-        <div className="w-[50vw] h-[50vw] max-w-screen-md max-h-screen-md aspect-square relative">
-          <div className="grid absolute inset-0 grid-cols-5 gap-0.5 p-1 rounded-md"
-            onDragLeave={handleDragLeave}
-          >
-            {boardValues.map((value, index) => (
-              <GameBoardCell 
-                key={index} 
-                id={index}
-                value={value}
-                onDrop={handleTileDrop}
-                isMatched={cellMatches[index]}
-                isWin={isWin}
-              />
-            ))}
+      <div className='flex flex-col max-h-screen'>
+        <div className="flex justify-center mt-2">
+          <div className='h-[50vw] w-[50vw] md:w-[364px] md:h-[364px] max-h-screen aspect-square relative'>
+            <div className='grid absolute inset-0 grid-cols-5 gap-0.5 p-1 rounded-md'
+              onDragLeave={handleDragLeave}
+            >
+              {boardValues.map((value, index) => (
+                <GameBoardCell 
+                  key={index} 
+                  id={index}
+                  value={value}
+                  onDrop={handleTileDrop}
+                  isMatched={cellMatches[index]}
+                  isWin={isWin}
+                />
+              ))}
+            </div>
           </div>
         </div>
+        <div className='mt-4'>
+          <TilesBar tileValues={tileValues}/>
+        </div>
       </div>
-      <TilesBar tileValues={tileValues}/>
     </>
   )
 }
 
-export default GameBoard;
+const mapStateToProps = (state: RootState): GameBoardProps => ({
+  levelUpPhase: state.levelState.value.levelUpPhase,
+  gameBoardLines: state.levelState.value.gameBoardLines,
+  rows: state.levelState.value.rows,
+
+});
+
+export default connect(mapStateToProps)(GameBoard)

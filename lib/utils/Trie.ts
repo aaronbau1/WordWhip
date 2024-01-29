@@ -1,4 +1,4 @@
-import { validWords } from "../data";
+import { validFiveLetterWords } from "../data";
 
 interface TrieNode {
   children: { [key: string]: TrieNode };
@@ -41,7 +41,7 @@ class Trie {
 
 //initialize Trie with valid words
 const trie = new Trie();
-validWords.forEach((word) => trie.insert(word));
+validFiveLetterWords.forEach((word) => trie.insert(word));
 
 export default trie;
 

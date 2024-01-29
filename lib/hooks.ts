@@ -1,4 +1,4 @@
-import { validWords, gameBoardLines } from "./data";
+import { validFiveLetterWords } from "./data";
 
 export const getRandomLetter = ():string => {
   // ASCII codes for capital letters range from 65 to 90
@@ -8,20 +8,20 @@ export const getRandomLetter = ():string => {
 }
 
 export const getRandomWord = (): string => {
-  const randomIndex = Math.floor(Math.random() * validWords.length);
-  return validWords[randomIndex];
+  let array = validFiveLetterWords;
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
 }
 
-export const getRandomLine = (): number[] => {
+export const getRandomLine = (wordLength: number, gameBoardLines:number[][]): number[] => {
   const randomIndex = Math.floor(Math.random() * gameBoardLines.length);
   return gameBoardLines[randomIndex].slice();
 }
 
 export const getRandomIndex = (array: string[]): number => {
   const randomIndex = Math.floor(Math.random() * array.length);
-  return randomIndex
+  return randomIndex;
 }
-
 
 
 

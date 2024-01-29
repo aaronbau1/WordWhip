@@ -62,7 +62,7 @@ const GameBoardCell = ({ id, value, onDrop, isMatched, isWin }: GameBoardCellPro
 
   return (
     <motion.div className={`bg-gray-300 flex items-center justify-center text-2xl 
-      font-bold text-gray-700 border border-black/60`}
+      font-bold text-gray-700 border border-black/60 aspect-square`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
