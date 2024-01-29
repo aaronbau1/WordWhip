@@ -3,17 +3,18 @@
 import { Button } from "@/components/ui/button"
 import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/levelupdialog"
 import { closeLevelUpModal, openLevelUpModal } from "@/lib/features/gameState-slice";
-import { AppDispatch, useAppSelector } from "@/lib/store";
+import { AppDispatch, RootState, useAppSelector } from "@/lib/store";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { Info } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { getRandomIndex } from "../../../lib/hooks";
-import { levelUpOptions } from "../../../lib/data";
-import { addColumn, addRow } from "@/lib/features/levelState-slice";
+import { addColumnLines, levelUpPhaseStart, addDiagonalLines } from "@/lib/features/levelState-slice";
 
-export function LevelUpModal() {
+interface levelUpOptionsProps {
+  levelUpOptions: string[];
+}
+
+const LevelUpModal = ({levelUpOptions}:levelUpOptionsProps) => {
   const isOpen = useAppSelector((state) => state.gameState.value.levelUpModalIsOpen);
-  const wordLength = useAppSelector((state) => state.levelState.value.wordLength);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -25,49 +26,47 @@ export function LevelUpModal() {
     dispatch(openLevelUpModal());
   }
 
-  const chooseDifficulty = (wordLength: number) => {
-    if (wordLength <= 4) {
-      return levelUpOptions[getRandomIndex(levelUpOptions)]
-    } else {
-      let difficulty;
-      do {
-        difficulty = levelUpOptions[getRandomIndex(levelUpOptions)];
-      } while (difficulty !== 'Increase the Word Length');
-      return difficulty;
-    }
+  const chooseDifficultyOptions = ():string[] => {
+    let option1 = levelUpOptions[getRandomIndex(levelUpOptions)]
+    let option2: string;
+    do {
+      option2 = levelUpOptions[getRandomIndex(levelUpOptions)]
+    } while (option1 === option2)
+    return [option1, option2]
   }
+
+  const options = chooseDifficultyOptions();
 
   const addDifficulty = (option:string) => {
     switch(option) {
-      case 'Add a Row':
-        dispatch(addRow());
+      case 'Words Appear in Columns':
+        dispatch(addColumnLines());
+
         break;
-      case 'Add a Column':
-        dispatch(addColumn());
+      case 'Words Appear in Diagonals':
+        dispatch(addDiagonalLines());
         break;
     }
     handleModalClose();
+    dispatch(levelUpPhaseStart())
   }
-
-  const option1 = chooseDifficulty(wordLength);
-  const option2 = chooseDifficulty(wordLength);
 
   return (
     <Dialog open={isOpen} onOpenChange={() => isOpen ? handleModalClose : handleModalOpen}>
       <DialogContent className="sm:max-w-[425px]">        
         <DialogHeader>
-          <DialogTitle className="font-2xl">Level Up!</DialogTitle>
-          <DialogDescription className="font-semibold">How would you like to increase the difficulty?</DialogDescription>
+          <DialogTitle className="flex justify-center font-2xl">Level Up!</DialogTitle>
+          <DialogDescription className="flex justify-center font-semibold">How would you like to increase the difficulty?</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <div className="flex justify-center mx-2">
-            <Button variant="outline" onClick={() => addDifficulty(option1)}>
-              {option1}
-            </Button>
-            <Button variant="outline" className="ml-4" onClick={() => addDifficulty(option2)}>
-              {option2}
-            </Button>
+            <div className="flex flex-col justify-center mx-2">
+              <Button variant="outline" className="mb-2 bg-gray-200" onClick={() => addDifficulty(options[0])}>
+                {options[0]}
+              </Button>
+              <Button variant="outline" className=" bg-gray-200" onClick={() => addDifficulty(options[1])}>
+                {options[1]}
+              </Button>
             </div>
           </DialogClose>
         </DialogFooter>
@@ -75,3 +74,9 @@ export function LevelUpModal() {
     </Dialog>
   )
 }
+
+const mapStateToProps = (state: RootState): levelUpOptionsProps => ({
+  levelUpOptions: state.levelState.value.levelUpOptions,
+});
+
+export default connect(mapStateToProps)(LevelUpModal);
