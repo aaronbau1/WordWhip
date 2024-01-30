@@ -8,24 +8,25 @@ import { getRandomLetter, getRandomIndex, getRandomLine, getRandomWord } from ".
 import LevelDashboard from "./LevelDashboard";
 import { connect, useDispatch } from "react-redux";
 import { AppDispatch, RootState, useAppSelector } from "@/lib/store";
-import { addLoss, addWin, openLevelUpModal } from "@/lib/features/gameState-slice";
+import { addLoss, addWin, clearWinsLosses, openGameOverModal, openLevelUpModal, resetGameState } from "@/lib/features/gameState-slice";
 import { delay } from "@/lib/utils";
 import LevelUpModal from "./LevelUpModal";
-import { addLevel, levelUpPhaseEnd, levelUpPhaseStart } from "@/lib/features/levelState-slice";
+import { addLevel, gameOverPhaseEnd, levelUpPhaseEnd, levelUpPhaseStart, resetLevelState } from "@/lib/features/levelState-slice";
+import GameOverModal from "./GameOverModal";
 
 interface GameBoardProps {
   levelUpPhase: boolean;
   gameBoardLines: number[][];
-  rows:number;
+  gameOverPhase: boolean;
 }
 
-const GameBoard = ({ levelUpPhase, gameBoardLines,rows}:GameBoardProps) => {
+const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase}:GameBoardProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const wins = useAppSelector((state) => state.gameState.value.wins);
   const losses = useAppSelector((state) => state.gameState.value.losses);
   const columns = useAppSelector((state) => state.levelState.value.columns);
-  const columnLines = useAppSelector((state) => state.levelState.value.columnLines);
+  const rows = useAppSelector((state) => state.levelState.value.rows);
   const wordLength = useAppSelector((state) => state.levelState.value.wordLength);
   
   const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
@@ -44,8 +45,17 @@ const GameBoard = ({ levelUpPhase, gameBoardLines,rows}:GameBoardProps) => {
   }, [turnOver])
 
   useEffect(() => {
+    if (gameOverPhase) {
+      dispatch(resetGameState());
+      dispatch(resetLevelState());
+      dispatch(gameOverPhaseEnd());
+    }
+  }, [gameOverPhase])
+
+  useEffect(() => {
     if (levelUpPhase) {
       cleanUp();
+      dispatch(clearWinsLosses());
       dispatch(levelUpPhaseEnd());
     }
   }, [levelUpPhase])
@@ -116,9 +126,11 @@ const GameBoard = ({ levelUpPhase, gameBoardLines,rows}:GameBoardProps) => {
       // level is added after render so win or loss always lags one behind
       if (wins >= 2 ) {
         dispatch(addLevel());
+        dispatch(openLevelUpModal());
       } else if (losses >= 2) {
+        dispatch(openGameOverModal());
       }
-      dispatch(openLevelUpModal())
+      cleanUp()
     })
   } 
 
@@ -141,6 +153,7 @@ const GameBoard = ({ levelUpPhase, gameBoardLines,rows}:GameBoardProps) => {
 
   return (
     <>
+      <GameOverModal />
       <LevelUpModal />
       <LevelDashboard />
       <div className='flex flex-col max-h-screen'>
@@ -173,7 +186,7 @@ const GameBoard = ({ levelUpPhase, gameBoardLines,rows}:GameBoardProps) => {
 const mapStateToProps = (state: RootState): GameBoardProps => ({
   levelUpPhase: state.levelState.value.levelUpPhase,
   gameBoardLines: state.levelState.value.gameBoardLines,
-  rows: state.levelState.value.rows,
+  gameOverPhase: state.levelState.value.gameOverPhase,
 
 });
 

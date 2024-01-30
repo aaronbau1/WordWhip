@@ -13,6 +13,7 @@ interface gameStateState {
 
   //turn progression
   levelUpModalIsOpen: boolean;
+  gameOverModalIsOpen: boolean;
 }
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
     losses: 0,
 
     levelUpModalIsOpen: false,
+    gameOverModalIsOpen: false,
   } as gameStateState
 } as InitialState;
 
@@ -28,6 +30,9 @@ export const gameState = createSlice({
   name: 'gameState',
   initialState,
   reducers: {
+    resetGameState: (state) => {
+      return initialState
+    },
     addWin: (state) => {
       state.value.wins += 1;
     },
@@ -43,6 +48,12 @@ export const gameState = createSlice({
     },
     closeLevelUpModal: (state) => {
       state.value.levelUpModalIsOpen = false;
+    },
+    openGameOverModal: (state) => {
+      state.value.gameOverModalIsOpen = true;
+    },
+    closeGameOverModal: (state) => {
+      state.value.gameOverModalIsOpen= false;
     }
   }
 })
@@ -53,5 +64,8 @@ export const {
   clearWinsLosses, 
   openLevelUpModal,
   closeLevelUpModal, 
+  openGameOverModal,
+  closeGameOverModal,
+  resetGameState,
 } = gameState.actions;
 export default gameState.reducer;

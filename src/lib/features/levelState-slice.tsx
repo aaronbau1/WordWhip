@@ -13,10 +13,10 @@ interface levelState {
   columns: number;
   wordLength: number;
   tiles: number;
-  columnLines: boolean;
   levelUpPhase: boolean;
   gameBoardLines: number[][];
   levelUpOptions:string[];
+  gameOverPhase: boolean;
 }
 
 const initialState = {
@@ -27,14 +27,14 @@ const initialState = {
     wordLength: 5,
     gameBoardLines: [[0,1,2,3,4]],
     tiles: 1,
-    columnLines: false,
     levelUpPhase: false,
+    gameOverPhase: false,
     levelUpOptions: [
       'Words Appear in Columns',
       'Words Appear in Diagonals',
-      'Add Row'
-      // 'Extra Tile',
-      // 'Reduce Timer',
+      // 'Add Row'
+      'Extra Tile',
+      'Reduce Timer',
     ],
   } as levelState
 } as InitialState;
@@ -43,8 +43,8 @@ export const levelState = createSlice({
   name: 'levelState',
   initialState,
   reducers: {
-    resetGame: (state) => {
-      state = initialState;
+    resetLevelState: (state) => {
+      return initialState
     },
     // addRow: (state) => {
     //   state.value.rows += 1;
@@ -73,13 +73,19 @@ export const levelState = createSlice({
     },
     levelUpPhaseStart: (state) => {
       state.value.levelUpPhase = true;
+    },
+    gameOverPhaseEnd: (state) => {
+      state.value.gameOverPhase = false;
+    },
+    gameOverPhaseStart: (state) => {
+      state.value.gameOverPhase = true;
     }
 
   }
 })
 
 export const { 
-  resetGame,
+  resetLevelState,
   addLevel,
   addTile,
   increaseWordLength,
@@ -87,6 +93,8 @@ export const {
   addDiagonalLines,
   levelUpPhaseStart,
   levelUpPhaseEnd,
+  gameOverPhaseStart,
+  gameOverPhaseEnd,
   // addRow,
 } = levelState.actions;
 export default levelState.reducer;

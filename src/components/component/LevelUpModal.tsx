@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/levelupdialog"
+import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/cantcloseoutdialog"
 import { closeLevelUpModal, openLevelUpModal } from "@/lib/features/gameState-slice";
 import { AppDispatch, RootState, useAppSelector } from "@/lib/store";
 import { DialogClose } from "@radix-ui/react-dialog";
