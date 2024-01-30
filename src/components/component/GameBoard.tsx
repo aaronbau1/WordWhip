@@ -20,7 +20,7 @@ interface GameBoardProps {
   gameOverPhase: boolean;
 }
 
-const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase}:GameBoardProps) => {
+const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const wins = useAppSelector((state) => state.gameState.value.wins);
@@ -28,6 +28,7 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase}:GameBoardProps
   const columns = useAppSelector((state) => state.levelState.value.columns);
   const rows = useAppSelector((state) => state.levelState.value.rows);
   const wordLength = useAppSelector((state) => state.levelState.value.wordLength);
+  const tiles = useAppSelector((state) => state.levelState.value.tiles);
   
   const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
   const [boardValues, setBoardValues] = useState<string[]>(Array(rows*columns).fill(''));
@@ -70,7 +71,9 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase}:GameBoardProps
   const initializeGame = () => {
     const {solution, randomIndex, puzzleBoard, solutionLine} = createAPuzzle();
     setBoardValues(puzzleBoard);
-    setTileValues([solution[randomIndex]]);
+    let arr = Array(tiles).fill(getRandomLetter())
+    arr[getRandomIndex(arr)] = solution[randomIndex];
+    setTileValues(arr);
     setCellMatches(Array(rows*columns).fill(false));
   }
 

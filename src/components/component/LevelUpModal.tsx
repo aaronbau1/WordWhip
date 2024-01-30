@@ -7,7 +7,7 @@ import { AppDispatch, RootState, useAppSelector } from "@/lib/store";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { connect, useDispatch } from "react-redux";
 import { getRandomIndex } from "../../../lib/hooks";
-import { addColumnLines, levelUpPhaseStart, addDiagonalLines } from "@/lib/features/levelState-slice";
+import { addColumnLines, levelUpPhaseStart, addDiagonalLines, addTile } from "@/lib/features/levelState-slice";
 
 interface levelUpOptionsProps {
   levelUpOptions: string[];
@@ -45,6 +45,9 @@ const LevelUpModal = ({levelUpOptions}:levelUpOptionsProps) => {
         break;
       case 'Words Appear in Diagonals':
         dispatch(addDiagonalLines());
+        break;
+      case 'Add an Extra Tile':
+        dispatch(addTile());
         break;
     }
     handleModalClose();

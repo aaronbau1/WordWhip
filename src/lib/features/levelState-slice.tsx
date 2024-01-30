@@ -33,7 +33,7 @@ const initialState = {
       'Words Appear in Columns',
       'Words Appear in Diagonals',
       // 'Add Row'
-      'Extra Tile',
+      'Add an Extra Tile',
       'Reduce Timer',
     ],
   } as levelState
