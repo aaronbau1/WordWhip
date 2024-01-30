@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/ui/cantcloseoutdialog"
 import { closeGameOverModal, openGameOverModal, resetGameState } from "@/lib/features/gameState-slice";
-import { gameOverPhaseStart } from "@/lib/features/levelState-slice";
+import { gameOverPhaseStart, stopClock } from "@/lib/features/levelState-slice";
 import { AppDispatch, useAppSelector } from "@/lib/store";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useDispatch } from "react-redux";
@@ -22,6 +22,7 @@ const GameOverModal = () => {
 
   const handleModalOpen = () => {
     dispatch(openGameOverModal());
+    dispatch((stopClock()))
   }
 
   return (

@@ -11,8 +11,9 @@ import { AppDispatch, RootState, useAppSelector } from "@/lib/store";
 import { addLoss, addWin, clearWinsLosses, openGameOverModal, openLevelUpModal, resetGameState } from "@/lib/features/gameState-slice";
 import { delay } from "@/lib/utils";
 import LevelUpModal from "./LevelUpModal";
-import { addLevel, gameOverPhaseEnd, levelUpPhaseEnd, levelUpPhaseStart, resetLevelState } from "@/lib/features/levelState-slice";
+import { addLevel, gameOverPhaseEnd, levelUpPhaseEnd, levelUpPhaseStart, resetClock, resetLevelState, startClock, stopClock } from "@/lib/features/levelState-slice";
 import GameOverModal from "./GameOverModal";
+import { Button } from "../ui/button";
 
 interface GameBoardProps {
   levelUpPhase: boolean;
@@ -29,6 +30,8 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProp
   const rows = useAppSelector((state) => state.levelState.value.rows);
   const wordLength = useAppSelector((state) => state.levelState.value.wordLength);
   const tiles = useAppSelector((state) => state.levelState.value.tiles);
+  const runningClock = useAppSelector((state) => state.levelState.value.runningClock);
+
   
   const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
   const [boardValues, setBoardValues] = useState<string[]>(Array(rows*columns).fill(''));
@@ -39,12 +42,14 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProp
   const [puzzleLine, setPuzzleLine] = useState<number[]>([50, 50, 50]);
   const [isWin, setIsWin] = useState(false);
 
+  //turn completed phase
   useEffect(() => {
     if (turnOver) {
       checkForWin();
     }
   }, [turnOver])
 
+  //reset game phase
   useEffect(() => {
     if (gameOverPhase) {
       dispatch(resetGameState());
@@ -53,6 +58,7 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProp
     }
   }, [gameOverPhase])
 
+  //configure board for next level
   useEffect(() => {
     if (levelUpPhase) {
       cleanUp();
@@ -61,10 +67,13 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProp
     }
   }, [levelUpPhase])
 
+  //initialize board for current level
   useEffect(() => {
     if (isInitializing) {
       initializeGame();
       setIsInitializing(false);
+      dispatch(resetClock());
+      dispatch(startClock())
     }
   }, [isInitializing, boardValues, gameBoardLines])
 
@@ -128,9 +137,11 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProp
     delay(1250).then(() => {
       // level is added after render so win or loss always lags one behind
       if (wins >= 2 ) {
+        dispatch(stopClock());
         dispatch(addLevel());
         dispatch(openLevelUpModal());
       } else if (losses >= 2) {
+        dispatch(stopClock());
         dispatch(openGameOverModal());
       }
       cleanUp()
@@ -156,6 +167,9 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProp
 
   return (
     <>
+      <Button onClick={() => dispatch(startClock())}>start</Button>
+      <Button onClick={() => dispatch(stopClock())}>stop</Button>
+
       <GameOverModal />
       <LevelUpModal />
       <LevelDashboard />

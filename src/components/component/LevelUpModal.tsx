@@ -7,7 +7,7 @@ import { AppDispatch, RootState, useAppSelector } from "@/lib/store";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { connect, useDispatch } from "react-redux";
 import { getRandomIndex } from "../../../lib/hooks";
-import { addColumnLines, levelUpPhaseStart, addDiagonalLines, addTile } from "@/lib/features/levelState-slice";
+import { addColumnLines, levelUpPhaseStart, addDiagonalLines, addTile, reduceTime } from "@/lib/features/levelState-slice";
 
 interface levelUpOptionsProps {
   levelUpOptions: string[];
@@ -48,6 +48,9 @@ const LevelUpModal = ({levelUpOptions}:levelUpOptionsProps) => {
         break;
       case 'Add an Extra Tile':
         dispatch(addTile());
+        break;
+      case 'Reduce Timer by 5 seconds':
+        dispatch(reduceTime());
         break;
     }
     handleModalClose();
