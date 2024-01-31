@@ -42,9 +42,6 @@ const LevelDashboard = () => {
   
   return (
     <>
-    <div className="flex justify-center">
-      <Clock />
-    </div>
     <div className="flex flex-col-3 justify-center space-x-8">
       <WinCounter wins={wins} />
       <div className="font-bold text-2xl text-white mt-1 outline-4 outline-black">{level}</div>

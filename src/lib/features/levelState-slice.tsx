@@ -14,6 +14,7 @@ interface levelState {
   wordLength: number;
   tiles: number;
   clockTime: number;
+  timeSubtractions: number;
   runningClock: boolean;
   levelUpPhase: boolean;
   gameBoardLines: number[][];
@@ -30,6 +31,7 @@ const initialState = {
     gameBoardLines: [[0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24]],
     tiles: 1,
     clockTime: 60,
+    timeSubtractions: 0,
     runningClock: false,
     levelUpPhase: false,
     gameOverPhase: false,
@@ -73,7 +75,7 @@ export const levelState = createSlice({
       state.value.levelUpOptions = state.value.levelUpOptions.filter((diff) => diff !== 'Words Appear in Diagonals');
     },
     reduceTime: (state) => {
-      state.value.clockTime -= 5;
+      state.value.timeSubtractions += 5;
     },
     startClock: (state) => {
       state.value.runningClock = true;
@@ -82,7 +84,7 @@ export const levelState = createSlice({
       state.value.runningClock = false;
     },
     resetClock: (state) => {
-      state.value.clockTime = state.value.clockTime;
+      state.value.clockTime = initialState.value.clockTime - state.value.timeSubtractions;
     },
     levelUpPhaseEnd: (state) => {
       state.value.levelUpPhase = false;

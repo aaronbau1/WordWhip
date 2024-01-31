@@ -3,6 +3,7 @@
 import { openGameOverModal } from '@/lib/features/gameState-slice';
 import { stopClock } from '@/lib/features/levelState-slice';
 import { AppDispatch, RootState, useAppSelector } from '@/lib/store';
+import { useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { connect, useDispatch } from 'react-redux';
 
@@ -13,7 +14,12 @@ interface ClockProps {
 
 const Clock = ({runningClock, clockTime}:ClockProps) => {
 
+  const [reset, setReset] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
+
+  const handleReset = () => {
+    setReset(prevKey => prevKey + 1)
+  }
 
   const handleClockComplete = () => {
     dispatch(stopClock())
@@ -22,8 +28,10 @@ const Clock = ({runningClock, clockTime}:ClockProps) => {
 
   return (
     <div className='flex mt-3 items-center justify-center bg-white rounded-full font-semibold text-2xl'>
+      {/* <Button onClick={handleReset}>reset</Button> */}
       <CountdownCircleTimer
-        isPlaying={runningClock}
+        key={reset}
+        isPlaying={false}
         duration={clockTime}
         colors={['#50C878', '#F7B801', '#A30000', '#A30000']}
         colorsTime={[45, 30, 15, 0]}

@@ -14,23 +14,23 @@ import LevelUpModal from "./LevelUpModal";
 import { addLevel, gameOverPhaseEnd, levelUpPhaseEnd, levelUpPhaseStart, resetClock, resetLevelState, startClock, stopClock } from "@/lib/features/levelState-slice";
 import GameOverModal from "./GameOverModal";
 import { Button } from "../ui/button";
+import Clock from "./Clock";
 
 interface GameBoardProps {
   levelUpPhase: boolean;
   gameBoardLines: number[][];
   gameOverPhase: boolean;
+  wins: number;
+  losses: number
 }
 
-const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProps) => {
+const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase, wins, losses }:GameBoardProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
-  const wins = useAppSelector((state) => state.gameState.value.wins);
-  const losses = useAppSelector((state) => state.gameState.value.losses);
   const columns = useAppSelector((state) => state.levelState.value.columns);
   const rows = useAppSelector((state) => state.levelState.value.rows);
   const wordLength = useAppSelector((state) => state.levelState.value.wordLength);
   const tiles = useAppSelector((state) => state.levelState.value.tiles);
-  const runningClock = useAppSelector((state) => state.levelState.value.runningClock);
 
   
   const [highlightedCell, setHighlightedCell] = useState<number | null>(null);
@@ -167,9 +167,13 @@ const GameBoard = ({ levelUpPhase, gameBoardLines, gameOverPhase }:GameBoardProp
 
   return (
     <>
-      <Button onClick={() => dispatch(startClock())}>start</Button>
-      <Button onClick={() => dispatch(stopClock())}>stop</Button>
+      {/* <Button onClick={() => dispatch(startClock())}>start</Button>
+      <Button onClick={() => dispatch(stopClock())}>stop</Button> */}
+      {/* <Button onClick={() => dispatch(resetClock())}>reset</Button> */}
 
+      <div className="flex justify-center">
+        <Clock />
+      </div>
       <GameOverModal />
       <LevelUpModal />
       <LevelDashboard />
@@ -204,6 +208,8 @@ const mapStateToProps = (state: RootState): GameBoardProps => ({
   levelUpPhase: state.levelState.value.levelUpPhase,
   gameBoardLines: state.levelState.value.gameBoardLines,
   gameOverPhase: state.levelState.value.gameOverPhase,
+  wins: state.gameState.value.wins,
+  losses: state.gameState.value.losses,
 
 });
 
